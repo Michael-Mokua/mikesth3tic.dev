@@ -94,7 +94,8 @@ export default function MediaPage() {
                 {/* Media grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                     {items.map((item, i) => {
-                        const Icon = typeIcon[item.type as keyof typeof typeIcon] || FileText;
+                        const iconKey = item.type as keyof typeof typeIcon;
+                        const Icon = typeIcon[iconKey] || FileText;
                         return (
                             <motion.div
                                 key={item.id}
@@ -108,7 +109,12 @@ export default function MediaPage() {
                                         // eslint-disable-next-line @next/next/no-img-element
                                         <img src={item.preview} alt={item.name} className="w-full h-full object-cover" />
                                     ) : (
-                                        <Icon className="w-8 h-8 text-muted-foreground" />
+                                        <div className="w-8 h-8 text-muted-foreground">
+                                            {(() => {
+                                                const IconComponent = Icon as any;
+                                                return <IconComponent className="w-full h-full" />;
+                                            })()}
+                                        </div>
                                     )}
                                 </div>
                                 <div className="p-2">
