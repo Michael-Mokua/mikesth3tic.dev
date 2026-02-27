@@ -1,0 +1,26 @@
+---
+title: "xGAFFER: FPL Analytical Powerhouse"
+description: "A high-performance sports analytics dashboard built to optimize Fantasy Premier League decisions."
+date: "2026-02-08"
+image: "/og-image.png"
+technologies: ["React Native", "TypeScript", "Tailwind CSS", "FPL API", "Data Visualization"]
+github: "https://github.com/Michael-Mokua/xGAFFER"
+featured: true
+---
+
+# The Problem
+
+Fantasy Premier League managers are flooded with raw data. They need a system that doesn't just display player stats, but *analyzes* them to predict future yields (xG, xA, xGI) and suggest optimal squad rotations.
+
+## The Architecture
+
+xGAFFER is engineered as a lightning-fast React Native application designed for both iOS and Android. Its core function is ingesting massive JSON payloads from the official FPL API and rendering complex interactive charts with zero frame drops.
+
+### Key Technical Achievements
+1. **State Management**: Utilized Zustand to manage the massive global state of 600+ Premier League players, their upcoming fixtures, and historical yields.
+2. **Data Transformation**: Built a custom ETL pipeline on the client side to parse and aggregate the bloated FPL API responses into lean, usable data structures for the visualization library.
+3. **Cross-Platform UI**: Designed a sleek, "Football Manager"-inspired dark mode interface using Tailwind CSS and custom React Native Reanimated components for smooth page transitions.
+
+## The Result
+
+xGAFFER allows users to identify differential picks and optimize their chip strategy visually, removing the spreadsheet burden from the FPL experience. It stands as a testament to my ability to handle complex third-party API integrations and large, real-time datasets.

@@ -1,0 +1,26 @@
+---
+title: "Agri-Value-Connect: B2B Agricultural Marketplace"
+description: "A robust scalable platform bridging the gap between rural farmers and commercial buyers."
+date: "2026-01-19"
+image: "/og-image.png"
+technologies: ["Next.js", "Prisma", "PostgreSQL", "Node.js", "Payment Gateways"]
+github: "https://github.com/Michael-Mokua/agri-value-connect"
+featured: true
+---
+
+# The Vision
+
+Agriculture in East Africa suffers from severe supply-chain fragmentation. Farmers produce yields but lack direct market access, leading to massive post-harvest losses. Agri-Value-Connect was architected to solve this asymmetry by acting as a digital escrow and marketplace.
+
+## The Architecture
+
+Building a multi-sided B2B marketplace requires a rock-solid relational database and transactional integrity. I opted for a **PostgreSQL** database managed through the **Prisma ORM**, ensuring all supply and demand data is strictly typed and relationship-bound.
+
+### Key Technical Achievements
+1. **Role-Based Access Control (RBAC)**: Implemented NextAuth.js to handle complex, distinct portals for Farmers, Buyers, and System Administrators.
+2. **Transactional Safety**: Engineered SQL transactions to ensure that when a buyer places an order, the farmer's inventory is atomically decremented, preventing double-selling.
+3. **Responsive Operations Console**: Built a complex internal dashboard using Tailwind CSS and Recharts to allow admins to visualize GMV (Gross Merchandise Value) and user growth in real-time.
+
+## The Result
+
+Agri-Value-Connect demonstrates my ability to take a complex real-world supply chain problem and architect a structured, secure, and scalable web platform that handles money and livelihoods.

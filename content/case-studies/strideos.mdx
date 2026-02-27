@@ -1,0 +1,26 @@
+---
+title: "StrideOS: High-Performance Fitness Tracker"
+description: "A native Android application featuring real-time GPS tracking and offline map capabilities."
+date: "2026-02-13"
+image: "/og-image.png"
+technologies: ["Android SDK", "Kotlin", "osmdroid", "Room Database", "Location APIs"]
+github: "https://github.com/Michael-Mokua/StrideOS"
+featured: true
+---
+
+# The Problem
+
+Modern fitness tracking applications are often bloated with unnecessary features and tied to expensive, proprietary mapping SDKs (like Google Maps) that drain battery life and fail in remote areas without cellular coverage.
+
+## The Architecture
+
+StrideOS was built from the ground up as a lean, battery-efficient native Android application written in **Kotlin**. To solve the offline mapping problem, I architected a migration from Google Maps to **osmdroid**, a free, open-source library that allows for heavy map tile caching and completely offline route tracking.
+
+### Key Technical Achievements
+1. **Foreground Services**: Engineered robust Android Foreground Services that keep the phone's GPS awake and polling accurately even when the device is locked and in a pocket.
+2. **Local Persistence**: Implemented the **Room Database** (SQLite wrapper) to securely store thousands of high-frequency GPS coordinates (latitude, longitude, speed, timestamp) in real-time without blocking the main UI thread.
+3. **Map Migration**: Successfully stripped out Google Play Services dependencies for mapping, decoupling the app from paid APIs and ensuring functionality in disconnected environments.
+
+## The Result
+
+StrideOS is a testament to my ability to work close to the metal with mobile hardware sensors (GPS, Accelerometers) and manage complex local state and battery optimizations entirely within the native Android ecosystem.
