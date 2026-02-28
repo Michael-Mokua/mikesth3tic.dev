@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
-import { getPost, getAllPostSlugs } from "@/lib/mdx";
+import { getPost, getAllPostSlugs, getFirestorePost, getFirestorePosts } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { formatDate } from "@/lib/utils";
 import { ArrowLeft, Calendar, Clock, Share2, Tag as TagIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { BlogReactions } from "@/components/blog/BlogReactions";
-
 import rehypePrettyCode from "rehype-pretty-code";
 
 interface BlogPostPageProps {
@@ -50,12 +49,21 @@ const components = {
 };
 
 export async function generateStaticParams() {
-    const slugs = getAllPostSlugs();
-    return slugs.map((slug) => ({ slug }));
+    const mdxSlugs = getAllPostSlugs();
+    const firestorePosts = await getFirestorePosts();
+    const firestoreSlugs = firestorePosts.map(p => p.slug);
+
+    // Combine and remove duplicates
+    const allSlugs = Array.from(new Set([...mdxSlugs, ...firestoreSlugs]));
+    return allSlugs.map((slug) => ({ slug }));
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-    const post = getPost(params.slug);
+    let post = getPost(params.slug);
+
+    if (!post) {
+        post = await getFirestorePost(params.slug);
+    }
 
     if (!post) {
         notFound();

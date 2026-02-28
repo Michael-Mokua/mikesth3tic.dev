@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Search, Eye, Calendar, Tag, RefreshCw, ExternalLink, FileText } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Eye, Calendar, Tag, RefreshCw, ExternalLink, FileText, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 
@@ -22,14 +22,56 @@ export default function PostsPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState<"all" | "blog" | "case-study">("all");
+    const [isCreating, setIsCreating] = useState(false);
+    const [newPost, setNewPost] = useState({ title: "", slug: "", excerpt: "", content: "", tags: "" });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    useEffect(() => {
+    const refreshPosts = () => {
+        setLoading(true);
         fetch("/api/admin/posts")
             .then((r) => r.json())
             .then((d) => setPosts(d.posts ?? []))
             .catch(console.error)
             .finally(() => setLoading(false));
+    };
+
+    useEffect(() => {
+        refreshPosts();
     }, []);
+
+    const handleCreate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            const res = await fetch("/api/admin/posts", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ...newPost,
+                    tags: newPost.tags.split(",").map(t => t.trim()).filter(Boolean)
+                })
+            });
+            if (res.ok) {
+                setIsCreating(false);
+                setNewPost({ title: "", slug: "", excerpt: "", content: "", tags: "" });
+                refreshPosts();
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (slug: string) => {
+        if (!confirm("Are you sure? This only deletes posts stored in the database.")) return;
+        try {
+            const res = await fetch(`/api/admin/posts?slug=${slug}`, { method: "DELETE" });
+            if (res.ok) refreshPosts();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const filtered = posts.filter((p) => {
         const matchSearch = p.title.toLowerCase().includes(search.toLowerCase());
@@ -39,21 +81,131 @@ export default function PostsPage() {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6">
+            <div className="space-y-6 text-foreground">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <p className="text-xs font-mono text-electric-400 uppercase tracking-widest mb-1">// CONTENT</p>
-                        <h1 className="text-2xl font-black text-foreground">Blog Posts</h1>
-                        <p className="text-sm text-muted-foreground mt-1">{posts.length} posts loaded from MDX files + Firestore view counts</p>
+                        <h1 className="text-2xl font-black">Blog Posts</h1>
+                        <p className="text-sm text-muted-foreground mt-1">{posts.length} posts loaded (MDX + Firestore)</p>
                     </div>
-                    <Link
-                        href="/blog"
-                        target="_blank"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-foreground hover:border-electric-400/30 transition-all"
-                    >
-                        <ExternalLink className="w-4 h-4" /> View Blog
-                    </Link>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setIsCreating(true)}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-electric-400 text-dark-950 text-sm font-bold hover:bg-electric-300 transition-all"
+                        >
+                            <Tag className="w-4 h-4" /> Create New Post
+                        </button>
+                        <Link
+                            href="/blog"
+                            target="_blank"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm text-foreground hover:border-electric-400/30 transition-all"
+                        >
+                            <ExternalLink className="w-4 h-4" /> View Blog
+                        </Link>
+                    </div>
                 </div>
+
+                {/* Create Modal */}
+                <AnimatePresence>
+                    {isCreating && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setIsCreating(false)}
+                                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                            />
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                className="relative w-full max-w-2xl bg-dark-900 border border-white/[0.1] rounded-[2rem] p-8 overflow-hidden shadow-2xl"
+                            >
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-electric-400/5 blur-[80px] rounded-full -mr-32 -mt-32" />
+
+                                <h2 className="text-2xl font-black mb-6 flex items-center gap-2 relative z-10">
+                                    <FileText className="w-6 h-6 text-electric-400" />
+                                    New Blog Post
+                                </h2>
+
+                                <form onSubmit={handleCreate} className="space-y-4 relative z-10">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground ml-1">Title</label>
+                                            <input
+                                                required
+                                                value={newPost.title}
+                                                onChange={e => setNewPost({ ...newPost, title: e.target.value, slug: e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') })}
+                                                placeholder="Understanding Neural Networks"
+                                                className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-electric-400/50"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground ml-1">Slug</label>
+                                            <input
+                                                required
+                                                value={newPost.slug}
+                                                onChange={e => setNewPost({ ...newPost, slug: e.target.value })}
+                                                className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-electric-400/50 font-mono"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground ml-1">Excerpt</label>
+                                        <input
+                                            required
+                                            value={newPost.excerpt}
+                                            onChange={e => setNewPost({ ...newPost, excerpt: e.target.value })}
+                                            placeholder="A brief overview of the post..."
+                                            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-electric-400/50"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground ml-1">Content (Markdown)</label>
+                                        <textarea
+                                            required
+                                            rows={8}
+                                            value={newPost.content}
+                                            onChange={e => setNewPost({ ...newPost, content: e.target.value })}
+                                            placeholder="# Hello World\n\nYour amazing content here..."
+                                            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-electric-400/50 resize-none font-mono"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground ml-1">Tags (Comma separated)</label>
+                                        <input
+                                            value={newPost.tags}
+                                            onChange={e => setNewPost({ ...newPost, tags: e.target.value })}
+                                            placeholder="AI, Tech, Architecture"
+                                            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-electric-400/50"
+                                        />
+                                    </div>
+
+                                    <div className="flex justify-end gap-3 pt-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsCreating(false)}
+                                            className="px-6 py-2.5 rounded-xl text-sm font-bold text-muted-foreground hover:text-foreground transition-all"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className="px-8 py-2.5 rounded-xl bg-electric-400 text-dark-950 text-sm font-bold hover:bg-electric-300 transition-all disabled:opacity-50"
+                                        >
+                                            {isSubmitting ? "Publishing..." : "Publish Post"}
+                                        </button>
+                                    </div>
+                                </form>
+                            </motion.div>
+                        </div>
+                    )}
+                </AnimatePresence>
 
                 {/* Filters */}
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -86,7 +238,7 @@ export default function PostsPage() {
                         <div className="col-span-2 hidden sm:block">Type</div>
                         <div className="col-span-2 hidden md:block">Views</div>
                         <div className="col-span-2 hidden lg:block">Reading Time</div>
-                        <div className="col-span-1 text-right">Link</div>
+                        <div className="col-span-1 text-right">Actions</div>
                     </div>
 
                     {loading ? (
@@ -132,7 +284,7 @@ export default function PostsPage() {
                                 <div className="col-span-2 hidden lg:block">
                                     <p className="text-xs text-muted-foreground">{post.readingTime}</p>
                                 </div>
-                                <div className="col-span-1 flex items-center justify-end">
+                                <div className="col-span-1 flex items-center justify-end gap-2">
                                     <Link
                                         href={post.type === "blog" ? `/blog/${post.slug}` : `/projects/${post.slug}`}
                                         target="_blank"
@@ -140,6 +292,12 @@ export default function PostsPage() {
                                     >
                                         <ExternalLink className="w-3.5 h-3.5" />
                                     </Link>
+                                    <button
+                                        onClick={() => handleDelete(post.slug)}
+                                        className="p-1.5 rounded-lg hover:bg-red-500/10 text-muted-foreground hover:text-red-400 transition-colors"
+                                    >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
                                 </div>
                             </motion.div>
                         ))
