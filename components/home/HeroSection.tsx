@@ -17,11 +17,10 @@ const HeroBackground = dynamic(
 const Magnetic = dynamic(() => import("@/components/ui/Magnetic"), { ssr: false });
 
 const ROLES = [
-    "Software Developer & Founder",
-    "AI Systems Architect",
-    "Full-Stack Innovator",
-    "IT Researcher @ Kabarak",
-    "Founder @ MIKESTH3TIC.DEV",
+    "Software Product Studio",
+    "AI Systems Engineering",
+    "Scalable Digital Solutions",
+    "Product Engineering Studio",
 ];
 
 export function HeroSection() {
@@ -62,7 +61,7 @@ export function HeroSection() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
     };
 
-    const techStack = ["Next.js", "TypeScript", "Three.js", "TailwindCSS", "Firebase", "Node.js", "Python"];
+    const techStack = ["Next.js", "TypeScript", "TailwindCSS", "Node.js", "Python", "PostgreSQL", "Docker", "AWS"];
 
     return (
         <section
@@ -83,7 +82,7 @@ export function HeroSection() {
                     <motion.div variants={itemVariants} className="mb-4 flex justify-center">
                         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-mono font-medium bg-white/[0.03] border border-white/[0.08] text-muted-foreground uppercase tracking-widest backdrop-blur-md">
                             <span className="w-1.5 h-1.5 rounded-full bg-electric-400 animate-pulse" />
-                            Engineering the Infinite
+                            Software-First Technology Studio
                         </span>
                     </motion.div>
 
@@ -98,7 +97,7 @@ export function HeroSection() {
                     {/* Slogan */}
                     <motion.div variants={itemVariants} className="mb-2">
                         <span className="text-sm sm:text-base font-medium text-white uppercase tracking-[0.3em]">
-                            Disrupt. Automate. Dominate.
+                            We design, build, and scale modern software products.
                         </span>
                     </motion.div>
 

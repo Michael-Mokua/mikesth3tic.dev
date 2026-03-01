@@ -24,20 +24,20 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mikesth3tic.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Michael Ogutu Mokua | MIKESTH3TIC.DEV",
-    template: "%s | MIKESTH3TIC.DEV",
+    default: "Michael Ogutu Mokua | Software Product Studio",
+    template: "%s | mikesth3tic.dev",
   },
   description:
-    "MIKESTH3TIC.DEV — Engineering Intelligent Systems for a Smarter Digital Future. Specialized in Next.js, AI Integration, and Scalable Architecture.",
+    "mikesth3tic.dev — A modern Software-First Technology Studio that designs, builds, and scales intelligent digital products. Specialized in Next.js, AI Systems, and Scalable Architecture.",
   keywords: [
     "Michael Ogutu Mokua",
-    "MIKESTH3TIC",
+    "mikesth3tic.dev",
+    "Software Product Studio",
+    "Product Engineering Nairobi",
     "AI Systems Architect",
-    "Full-Stack Developer Nairobi",
-    "Next.js Portfolio",
-    "TypeScript Expert",
-    "Creative Technologist",
-    "Scaleable Software Solutions",
+    "SaaS Development",
+    "Next.js Expert",
+    "Scalable Software Solutions",
   ],
   authors: [{ name: "Michael Ogutu", url: siteUrl }],
   creator: "Michael Ogutu",
@@ -45,10 +45,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Michael Ogutu Mokua | MIKESTH3TIC.DEV",
+    title: "Michael Ogutu Mokua | Software Product Studio",
     description:
-      "Engineering Intelligent Systems for a Smarter Digital Future. Founder of MIKESTH3TIC.DEV.",
-    siteName: "MIKESTH3TIC.DEV",
+      "We design, build, and scale modern software products. mikesth3tic.dev is a Software-First Technology Studio specializing in AI and scalable systems.",
+    siteName: "mikesth3tic.dev",
     images: [
       {
         url: `${siteUrl}/og-image.png`,
@@ -60,9 +60,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Michael Ogutu Mokua | MIKESTH3TIC.DEV",
+    title: "Michael Ogutu Mokua | Software Product Studio",
     description:
-      "MIKESTH3TIC.DEV — Engineering Intelligent Systems for a Smarter Digital Future.",
+      "mikesth3tic.dev — Designing, building, and scaling modern software products.",
     images: [`${siteUrl}/og-image.png`],
     creator: "@Mikesth3tic_dev",
   },
@@ -134,9 +134,9 @@ export default function RootLayout({
               "@type": "Person",
               name: "Michael Ogutu",
               url: siteUrl,
-              jobTitle: "Full-Stack Developer & IT Student",
+              jobTitle: "Software Engineer & Founder",
               description:
-                "Engineering Intelligent Systems for a Smarter Digital Future.",
+                "Designing, building, and scaling modern software products.",
               sameAs: [
                 "https://github.com/Michael-Mokua",
                 "https://twitter.com/Mikesth3tic_dev",

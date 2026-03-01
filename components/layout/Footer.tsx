@@ -57,7 +57,7 @@ export function Footer() {
                             <Logo />
                         </Link>
                         <p className="text-sm text-muted-foreground leading-relaxed max-xs">
-                            Engineering Intelligent Systems for a Smarter Digital Future. Founder of MIKESTH3TIC.DEV.
+                            Software-First Technology Studio designing, building, and scaling modern digital products.
                         </p>
                         <p className="text-xs text-muted-foreground font-mono">
                             <span className="text-electric-400">▸</span> Nairobi, Kenya 🇰🇪

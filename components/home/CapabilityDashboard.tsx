@@ -1,38 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Bot, Zap, Cpu, Server, BarChart3 } from "lucide-react";
-
+import { Bot, Rocket, Heart, ShieldCheck, BarChart3 } from "lucide-react";
 const metrics = [
     {
-        label: "AI Models Deployed",
-        value: "12",
-        suffix: "",
-        icon: Bot,
+        label: "Products Shipped",
+        value: "15",
+        suffix: "+",
+        icon: Rocket,
         color: "text-electric-400",
         bg: "bg-electric-400/10",
     },
     {
-        label: "Requests Processed",
-        value: "450",
-        suffix: "k+",
-        icon: Cpu,
+        label: "Avg. User Satisfaction",
+        value: "98",
+        suffix: "%",
+        icon: Heart,
         color: "text-neon-400",
         bg: "bg-neon-400/10",
     },
     {
-        label: "Automation Efficiency",
-        value: "85",
-        suffix: "%",
-        icon: Zap,
+        label: "AI Systems Deployed",
+        value: "08",
+        suffix: "",
+        icon: Bot,
         color: "text-yellow-400",
         bg: "bg-yellow-400/10",
     },
     {
-        label: "Active Systems",
-        value: "24",
-        suffix: "/7",
-        icon: Server,
+        label: "Product Uptime",
+        value: "99",
+        suffix: ".9%",
+        icon: ShieldCheck,
         color: "text-blue-400",
         bg: "bg-blue-400/10",
     },
