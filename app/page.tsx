@@ -5,6 +5,7 @@ import { FeaturedBlog } from "@/components/home/FeaturedBlog";
 import { TrophyCabinet } from "@/components/home/TrophyCabinet";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { CapabilityDashboard } from "@/components/home/CapabilityDashboard";
+import { StudioProcess, VaultExplorer } from "@/components/home/StudioEnhancements";
 import { getAllPosts } from "@/lib/mdx";
 
 export default async function HomePage() {
@@ -14,8 +15,10 @@ export default async function HomePage() {
     <>
       <HeroSection />
       <SkillsSection />
+      <StudioProcess />
       <FeaturedProjects />
       <CapabilityDashboard />
+      <VaultExplorer />
       <TrophyCabinet />
       <FeaturedBlog posts={posts} />
       <NewsletterSection />

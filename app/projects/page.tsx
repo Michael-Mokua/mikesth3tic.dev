@@ -30,38 +30,11 @@ interface Repo {
     topics: string[];
 }
 
-const FEATURED_CASE_STUDIES = [
-    {
-        id: "aura",
-        title: "AURA: Adaptive User Reasoning Architecture",
-        description: "A hybrid reasoning intelligence system merging symbolic logic with neural processing.",
-        href: "/projects/aura",
-        tech: ["Next.js", "Python", "Llama 3", "Vector DBs"]
-    },
-    {
-        id: "xgaffer",
-        title: "xGAFFER: FPL Analytical Powerhouse",
-        description: "A high-performance React Native sports analytics dashboard built to optimize Fantasy Premier League decisions at scale.",
-        href: "/projects/xgaffer",
-        tech: ["React Native", "TypeScript", "Tailwind CSS", "Data Viz"]
-    },
-    {
-        id: "agri-value",
-        title: "Agri-Value-Connect: B2B Marketplace",
-        description: "A robust scalable platform bridging the gap between rural farmers and commercial buyers utilizing complex SQL transactions.",
-        href: "/projects/agri-value-connect",
-        tech: ["Next.js", "Prisma", "PostgreSQL", "Payments"]
-    },
-    {
-        id: "strideos",
-        title: "StrideOS: High-Performance Fitness Tracker",
-        description: "A native Kotlin Android application featuring real-time offline GPS tracking via osmdroid and SQLite caching.",
-        href: "/projects/strideos",
-        tech: ["Android SDK", "Kotlin", "osmdroid", "Room DB"]
-    }
-];
+// Case studies are now fetched dynamically from /api/projects
+
 
 export default function ProjectsPage() {
+    const [caseStudies, setCaseStudies] = useState<any[]>([]);
     const [repos, setRepos] = useState<Repo[]>([]);
     const [filteredRepos, setFilteredRepos] = useState<Repo[]>([]);
     const [loading, setLoading] = useState(true);
@@ -69,13 +42,23 @@ export default function ProjectsPage() {
     const [activeLang, setActiveLang] = useState("All");
 
     useEffect(() => {
-        async function fetchRepos() {
+        async function fetchData() {
             try {
-                const res = await fetch("/api/github");
-                const data = await res.json();
-                if (data.repos) {
-                    setRepos(data.repos);
-                    setFilteredRepos(data.repos);
+                const [reposRes, studiesRes] = await Promise.all([
+                    fetch("/api/github"),
+                    fetch("/api/projects")
+                ]);
+
+                const reposData = await reposRes.json();
+                const studiesData = await studiesRes.json();
+
+                if (reposData.repos) {
+                    setRepos(reposData.repos);
+                    setFilteredRepos(reposData.repos);
+                }
+
+                if (studiesData.studies) {
+                    setCaseStudies(studiesData.studies);
                 }
             } catch (err) {
                 console.error("Failed to load projects", err);
@@ -83,7 +66,7 @@ export default function ProjectsPage() {
                 setLoading(false);
             }
         }
-        fetchRepos();
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -118,34 +101,40 @@ export default function ProjectsPage() {
                     </p>
                 </motion.div>
 
-                {/* Featured Case Studies Grid (Hardcoded Elite Projects) */}
+                {/* Featured Case Studies Grid (Dynamic from MDX) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-32">
-                    {FEATURED_CASE_STUDIES.map((study, idx) => (
-                        <motion.div
-                            key={study.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                        >
-                            <Link href={study.href} className="group block h-full glass rounded-3xl p-8 border border-electric-400/20 hover:border-electric-400/50 hover:bg-white/[0.04] transition-all duration-300 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-electric-400/10 rounded-full blur-[80px] -mr-32 -mt-32 group-hover:bg-electric-400/20 transition-colors" />
+                    {loading ? (
+                        Array.from({ length: 4 }).map((_, i) => (
+                            <div key={i} className="h-64 glass rounded-3xl animate-pulse bg-white/5" />
+                        ))
+                    ) : (
+                        caseStudies.map((study, idx) => (
+                            <motion.div
+                                key={study.slug}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                            >
+                                <Link href={`/projects/${study.slug}`} className="group block h-full glass rounded-3xl p-8 border border-electric-400/20 hover:border-electric-400/50 hover:bg-white/[0.04] transition-all duration-300 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-64 h-64 bg-electric-400/10 rounded-full blur-[80px] -mr-32 -mt-32 group-hover:bg-electric-400/20 transition-colors" />
 
-                                <h3 className="text-2xl font-bold mb-3 group-hover:text-electric-400 transition-colors relative z-10">{study.title}</h3>
-                                <p className="text-muted-foreground leading-relaxed mb-6 relative z-10">{study.description}</p>
+                                    <h3 className="text-2xl font-bold mb-3 group-hover:text-electric-400 transition-colors relative z-10">{study.title}</h3>
+                                    <p className="text-muted-foreground leading-relaxed mb-6 relative z-10">{study.excerpt || study.description}</p>
 
-                                <div className="flex flex-wrap gap-2 mb-8 relative z-10">
-                                    {study.tech.map(t => (
-                                        <span key={t} className="px-3 py-1 bg-white/[0.05] border border-white/[0.05] rounded-full text-xs font-mono text-muted-foreground">{t}</span>
-                                    ))}
-                                </div>
+                                    <div className="flex flex-wrap gap-2 mb-8 relative z-10">
+                                        {(study.technologies || study.tags || []).map((t: string) => (
+                                            <span key={t} className="px-3 py-1 bg-white/[0.05] border border-white/[0.05] rounded-full text-xs font-mono text-muted-foreground">{t}</span>
+                                        ))}
+                                    </div>
 
-                                <div className="flex items-center gap-2 text-electric-400 font-bold text-sm mt-auto relative z-10">
-                                    Read Architecture <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </div>
-                            </Link>
-                        </motion.div>
-                    ))}
+                                    <div className="flex items-center gap-2 text-electric-400 font-bold text-sm mt-auto relative z-10">
+                                        Read Architecture <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </div>
+                                </Link>
+                            </motion.div>
+                        ))
+                    )}
                 </div>
 
                 {/* divider */}

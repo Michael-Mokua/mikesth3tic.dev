@@ -62,9 +62,23 @@ export function Navbar() {
         >
             <div className="container-custom flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="shrink-0">
-                    <Logo className={cn(isTransparent ? "text-white" : "text-foreground")} />
-                </Link>
+                <div className="flex items-center gap-4">
+                    <Link href="/" className="shrink-0">
+                        <Logo className={cn(isTransparent ? "text-white" : "text-foreground")} />
+                    </Link>
+                    <div className={cn(
+                        "hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full border text-[10px] font-mono tracking-widest uppercase transition-all duration-300",
+                        isTransparent
+                            ? "bg-white/5 border-white/10 text-white/50"
+                            : "bg-electric-400/5 border-electric-400/20 text-electric-400"
+                    )}>
+                        <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-electric-400 shadow-[0_0_8px_var(--electric-400)]"></span>
+                        </span>
+                        STATUS: READY FOR SCALE
+                    </div>
+                </div>
 
                 {/* Desktop nav */}
                 <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
