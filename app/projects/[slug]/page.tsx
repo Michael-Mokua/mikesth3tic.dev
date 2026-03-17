@@ -4,6 +4,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { ArrowLeft, Github, Calendar, Briefcase, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import rehypePrettyCode from "rehype-pretty-code";
+import { ArchitectureSandbox } from "@/components/ui/ArchitectureSandbox";
 
 interface CaseStudyPageProps {
     params: { slug: string };
@@ -103,7 +104,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                         {post.technologies && post.technologies.length > 0 && (
                             <div className="flex items-center gap-2 flex-wrap">
                                 <span className="text-muted-foreground font-mono mr-2">// TECH STACK:</span>
-                                {post.technologies.map(tech => (
+                                {post.technologies.map((tech: string) => (
                                     <span key={tech} className="px-3 py-1 bg-electric-400/5 text-electric-400 border border-electric-400/20 rounded-full text-xs font-bold tracking-wide">
                                         {tech}
                                     </span>
@@ -147,6 +148,11 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
                     </Link>
                 </div>
 
+                {/* Interactive Sandbox Feature */}
+                <div className="mt-16 sm:mt-24 pt-16 border-t border-white/5">
+                    <h3 className="text-2xl font-black tracking-tight mb-8 uppercase">Architecture & Systems Topology</h3>
+                    <ArchitectureSandbox />
+                </div>
             </div>
         </article>
     );

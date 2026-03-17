@@ -6,7 +6,7 @@ import { Send, Loader2, Sparkles } from "lucide-react";
 import { toast } from "@/components/ui/Toaster";
 import dynamic from "next/dynamic";
 
-const Magnetic = dynamic(() => import("@/components/ui/Magnetic"), { ssr: false });
+const Magnetic = dynamic(() => import("@/components/ui/Magnetic").then(mod => mod.Magnetic), { ssr: false });
 
 export function NewsletterSection() {
     const [email, setEmail] = useState("");

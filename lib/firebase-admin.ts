@@ -3,9 +3,13 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { getStorage } from "firebase-admin/storage";
 
-let adminApp: App;
+let adminApp: App | null = null;
 
-function getAdminApp(): App {
+function getAdminApp(): App | null {
+    if (!process.env.FIREBASE_ADMIN_PROJECT_ID) {
+        return null;
+    }
+
     if (getApps().length > 0) {
         return getApps()[0];
     }
@@ -28,13 +32,19 @@ function getAdminApp(): App {
 }
 
 export function getAdminDb() {
-    return getFirestore(getAdminApp());
+    const app = getAdminApp();
+    if (!app) return null;
+    return getFirestore(app);
 }
 
 export function getAdminAuth() {
-    return getAuth(getAdminApp());
+    const app = getAdminApp();
+    if (!app) return null;
+    return getAuth(app);
 }
 
 export function getAdminStorage() {
-    return getStorage(getAdminApp());
+    const app = getAdminApp();
+    if (!app) return null;
+    return getStorage(app);
 }

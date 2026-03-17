@@ -166,7 +166,7 @@ export default function AboutPage() {
                         <div className="glass p-8 rounded-3xl border border-white/5 space-y-6">
                             <div>
                                 <h3 className="text-xl font-bold text-foreground">Undergraduate Attachment</h3>
-                                <p className="text-neon-400 font-mono text-sm uppercase tracking-wider">SDYAE | Jan 2026 — April 2026</p>
+                                <p className="text-neon-400 font-mono text-sm uppercase tracking-wider">SDYACE | Jan 2026 — April 2026</p>
                                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                                     <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 text-neon-400 mt-1 shrink-0" /> Assisted in ICT operations and technical support</li>
                                     <li className="flex items-start gap-2"><ArrowRight className="w-3 h-3 text-neon-400 mt-1 shrink-0" /> Software and hardware configuration & maintenance</li>

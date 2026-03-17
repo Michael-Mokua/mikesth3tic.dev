@@ -46,23 +46,25 @@ export async function POST(req: Request) {
         // Persist to Firestore for admin dashboard
         try {
             const db = getAdminDb();
-            const now = new Date();
-            await db.collection("contact_submissions").add({
-                name: validatedData.name,
-                email: validatedData.email,
-                subject: validatedData.subject,
-                message: validatedData.message,
-                createdAt: now,
-                read: false,
-            });
-            // Log to activity feed
-            await db.collection("activity_log").add({
-                type: "contact",
-                action: "New contact form submission",
-                detail: `From ${validatedData.name} — ${validatedData.subject}`,
-                timestamp: now,
-                color: "text-neon-400",
-            });
+            if (db) {
+                const now = new Date();
+                await db.collection("contact_submissions").add({
+                    name: validatedData.name,
+                    email: validatedData.email,
+                    subject: validatedData.subject,
+                    message: validatedData.message,
+                    createdAt: now,
+                    read: false,
+                });
+                // Log to activity feed
+                await db.collection("activity_log").add({
+                    type: "contact",
+                    action: "New contact form submission",
+                    detail: `From ${validatedData.name} — ${validatedData.subject}`,
+                    timestamp: now,
+                    color: "text-neon-400",
+                });
+            }
         } catch (dbErr) {
             // Don't fail the request if Firestore write fails
             console.error("Firestore log error:", dbErr);

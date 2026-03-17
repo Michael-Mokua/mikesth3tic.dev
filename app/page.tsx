@@ -6,6 +6,7 @@ import { TrophyCabinet } from "@/components/home/TrophyCabinet";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { CapabilityDashboard } from "@/components/home/CapabilityDashboard";
 import { StudioProcess, VaultExplorer } from "@/components/home/StudioEnhancements";
+import { BrandVault } from "@/components/home/BrandVault";
 import { getAllPosts } from "@/lib/mdx";
 
 export default async function HomePage() {
@@ -19,6 +20,7 @@ export default async function HomePage() {
       <FeaturedProjects />
       <CapabilityDashboard />
       <VaultExplorer />
+      <BrandVault />
       <TrophyCabinet />
       <FeaturedBlog posts={posts} />
       <NewsletterSection />

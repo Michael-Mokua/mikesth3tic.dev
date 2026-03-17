@@ -106,6 +106,7 @@ import { getAdminDb } from "@/lib/firebase-admin";
 export async function getFirestorePosts(): Promise<PostMeta[]> {
     try {
         const db = getAdminDb();
+        if (!db) return [];
         const snap = await db.collection("blog_posts").orderBy("date", "desc").get();
         return snap.docs.map(doc => {
             const data = doc.data();
@@ -138,6 +139,7 @@ export async function getCombinedPosts(type: ContentType = "blog"): Promise<Post
 export async function getFirestorePost(slug: string): Promise<Post | null> {
     try {
         const db = getAdminDb();
+        if (!db) return null;
         const doc = await db.collection("blog_posts").doc(slug).get();
         if (!doc.exists) return null;
 

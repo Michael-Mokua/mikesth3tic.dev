@@ -11,6 +11,13 @@ export async function GET() {
         const csPosts = getAllPosts("case-studies");
         const totalPosts = mdxPosts.length + csPosts.length;
 
+        if (!db) {
+            return NextResponse.json({
+                stats: { totalViews: 0, subscriberCount: 0, totalPosts, contactCount: 0 },
+                recentContacts: [], recentActivity: [], pageViews: [],
+            });
+        }
+
         // 2. View counts from Firestore
         const viewsSnap = await db.collection("views").get();
         const totalViews = viewsSnap.docs.reduce((sum, d) => sum + (d.data().count ?? 0), 0);

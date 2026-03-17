@@ -5,6 +5,7 @@ import { getAdminDb } from "@/lib/firebase-admin";
 export async function GET() {
     try {
         const db = getAdminDb();
+        if (!db) return NextResponse.json({ subscribers: [], total: 0 });
         const snap = await db.collection("subscribers").orderBy("subscribedAt", "desc").get();
         const subscribers = snap.docs.map((d) => ({
             id: d.id,
@@ -22,6 +23,7 @@ export async function DELETE(req: Request) {
     try {
         const { id } = await req.json();
         const db = getAdminDb();
+        if (!db) return NextResponse.json({ error: "DB unavailable" }, { status: 503 });
         await db.collection("subscribers").doc(id).delete();
         return NextResponse.json({ success: true });
     } catch (error: any) {

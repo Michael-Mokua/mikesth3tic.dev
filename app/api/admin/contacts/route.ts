@@ -5,6 +5,7 @@ import { getAdminDb } from "@/lib/firebase-admin";
 export async function GET() {
     try {
         const db = getAdminDb();
+        if (!db) return NextResponse.json({ submissions: [] });
         const snap = await db
             .collection("contact_submissions")
             .orderBy("createdAt", "desc")
@@ -28,6 +29,7 @@ export async function DELETE(req: Request) {
     try {
         const { id } = await req.json();
         const db = getAdminDb();
+        if (!db) return NextResponse.json({ error: "DB unavailable" }, { status: 503 });
         await db.collection("contact_submissions").doc(id).delete();
         return NextResponse.json({ success: true });
     } catch (error: any) {

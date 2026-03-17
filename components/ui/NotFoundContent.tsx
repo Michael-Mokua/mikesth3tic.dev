@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Home, Zap } from "lucide-react";
 import { HeroBackground } from "@/components/home/HeroBackground";
-import Magnetic from "@/components/ui/Magnetic";
+import { Magnetic } from "@/components/ui/Magnetic";
 
 export function NotFoundContent() {
     return (

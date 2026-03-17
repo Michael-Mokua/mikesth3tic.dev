@@ -22,7 +22,7 @@ const HeroBackground = dynamic(
     { ssr: false }
 );
 
-const Magnetic = dynamic(() => import("@/components/ui/Magnetic"), { ssr: false });
+const Magnetic = dynamic(() => import("@/components/ui/Magnetic").then(mod => mod.Magnetic), { ssr: false });
 
 import { Variants } from "framer-motion";
 

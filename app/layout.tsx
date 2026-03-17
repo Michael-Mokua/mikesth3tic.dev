@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 const geistSans = Geist({
@@ -17,6 +18,10 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SystemStatus } from "@/components/layout/SystemStatus";
 import { ClientOverlays } from "@/components/layout/ClientOverlays";
+import { PageTransition } from "@/components/layout/PageTransition";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { DevHUD } from "@/components/ui/DevHUD";
+import { TerminalEmulator } from "@/components/ui/TerminalEmulator";
 import { cn } from "@/lib/utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mikesth3tic.dev";
@@ -116,6 +121,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClientOverlays />
+          <CustomCursor />
+          <DevHUD />
+          <TerminalEmulator />
+          <Suspense fallback={null}>
+            <PageTransition />
+          </Suspense>
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>

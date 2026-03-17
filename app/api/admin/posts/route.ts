@@ -10,6 +10,8 @@ export async function GET() {
         const blogPosts = await getCombinedPosts("blog");
         const csPosts = await getCombinedPosts("case-studies");
 
+        if (!db) return NextResponse.json({ posts: [...blogPosts, ...csPosts] });
+
         // Merge with view counts from Firestore
         const viewsSnap = await db.collection("views").get();
         const viewMap: Record<string, number> = {};
@@ -30,6 +32,7 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const db = getAdminDb();
+        if (!db) return NextResponse.json({ error: "DB unavailable" }, { status: 503 });
         const data = await req.json();
 
         if (!data.slug || !data.title || !data.content) {
@@ -57,6 +60,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
     try {
         const db = getAdminDb();
+        if (!db) return NextResponse.json({ error: "DB unavailable" }, { status: 503 });
         const { searchParams } = new URL(req.url);
         const slug = searchParams.get("slug");
 

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { RefreshCcw, Home, AlertCircle } from "lucide-react";
 import { HeroBackground } from "@/components/home/HeroBackground";
-import Magnetic from "@/components/ui/Magnetic";
+import { Magnetic } from "@/components/ui/Magnetic";
 
 export default function Error({
     error,
