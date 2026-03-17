@@ -15,6 +15,11 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Maximize2 } from "lucide-react";
+import { DataFlowEdge } from "./DataFlowEdge";
+
+const edgeTypes = {
+    "data-flow": DataFlowEdge,
+};
 
 interface ArchitectureSandboxProps {
     initialNodes?: Node[];
@@ -43,8 +48,8 @@ const defaultNodes: Node[] = [
 ];
 
 const defaultEdges: Edge[] = [
-    { id: "e1-2", source: "1", target: "2", animated: true, style: { stroke: "#8bd3e6" } },
-    { id: "e1-3", source: "1", target: "3", animated: true, style: { stroke: "#8bd3e6" } },
+    { id: "e1-2", source: "1", target: "2", type: "data-flow", animated: true, style: { stroke: "#8bd3e6" } },
+    { id: "e1-3", source: "1", target: "3", type: "data-flow", animated: true, style: { stroke: "#8bd3e6" } },
 ];
 
 export function ArchitectureSandbox({ initialNodes = defaultNodes, initialEdges = defaultEdges }: ArchitectureSandboxProps) {
@@ -66,6 +71,7 @@ export function ArchitectureSandbox({ initialNodes = defaultNodes, initialEdges 
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
+                edgeTypes={edgeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 proOptions={{ hideAttribution: true }}

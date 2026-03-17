@@ -87,5 +87,69 @@ export function useSound() {
         osc.stop(ctx.currentTime + 0.04);
     }, [initAudio]);
 
-    return { playHover, playClick, playType, initAudio };
+    const playSuccess = useCallback(() => {
+        initAudio();
+        const ctx = audioContextRef.current;
+        if (!ctx) return;
+
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(400, ctx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1);
+
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(600, ctx.currentTime);
+        osc2.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.15);
+
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start();
+        osc2.start();
+        osc1.stop(ctx.currentTime + 0.3);
+        osc2.stop(ctx.currentTime + 0.3);
+    }, [initAudio]);
+
+    const playAmbient = useCallback(() => {
+        initAudio();
+        const ctx = audioContextRef.current;
+        if (!ctx) return;
+
+        const osc = ctx.createOscillator();
+        const lfo = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const lfoGain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(40, ctx.currentTime); // Deep hum
+
+        lfo.type = "sine";
+        lfo.frequency.setValueAtTime(0.5, ctx.currentTime); // Slow pulse
+        lfoGain.gain.setValueAtTime(10, ctx.currentTime);
+
+        gain.gain.setValueAtTime(0.005, ctx.currentTime); // Very subtle
+
+        lfo.connect(lfoGain);
+        lfoGain.connect(osc.frequency);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        // Return stop function to caller
+        return () => {
+            try {
+                osc.stop();
+            } catch (e) {}
+        };
+    }, [initAudio]);
+
+    return { playHover, playClick, playType, playSuccess, playAmbient, initAudio };
 }

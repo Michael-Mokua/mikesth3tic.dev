@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Github, Twitter, Youtube, Instagram, Mail, ArrowUp, Lock } from "lucide-react";
 import { SpotifyWidget } from "@/components/ui/SpotifyWidget";
+import { StudioHeartbeat } from "@/components/ui/StudioHeartbeat";
 import { Logo } from "@/components/ui/Logo";
 
 const socialLinks = [
@@ -113,7 +114,8 @@ export function Footer() {
 
                 {/* Bottom bar */}
                 <div className="pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div className="flex-1 w-full md:w-auto">
+                    <div className="flex-1 w-full md:w-auto space-y-4">
+                        <StudioHeartbeat />
                         <SpotifyWidget />
                     </div>
                     <div className="flex flex-col sm:flex-row items-center justify-between w-full md:w-auto gap-4">

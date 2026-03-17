@@ -55,7 +55,7 @@ function VaultItem({ src }: { src: string }) {
 
 export function BrandVault() {
     return (
-        <section className="py-24 relative overflow-hidden bg-background">
+        <section className="py-24 relative overflow-hidden">
             <div className="container-custom relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <motion.div

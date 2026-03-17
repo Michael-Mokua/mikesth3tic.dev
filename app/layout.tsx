@@ -14,12 +14,16 @@ const geistMono = Geist_Mono({
 
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { KernelProvider } from "@/components/providers/KernelProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SystemStatus } from "@/components/layout/SystemStatus";
 import { ClientOverlays } from "@/components/layout/ClientOverlays";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { FluidBackground } from "@/components/ui/FluidBackground";
+import { KernelOverlays } from "@/components/ui/KernelOverlays";
+import { CommandCenter } from "@/components/ui/CommandCenter";
 import { DevHUD } from "@/components/ui/DevHUD";
 import { TerminalEmulator } from "@/components/ui/TerminalEmulator";
 import { cn } from "@/lib/utils";
@@ -120,19 +124,24 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ClientOverlays />
-          <CustomCursor />
-          <DevHUD />
-          <TerminalEmulator />
-          <Suspense fallback={null}>
-            <PageTransition />
-          </Suspense>
-          <div className="relative flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <SystemStatus />
-          </div>
+          <KernelProvider>
+            <ClientOverlays />
+            <FluidBackground />
+            <CustomCursor />
+            <KernelOverlays />
+            <CommandCenter />
+            <DevHUD />
+            <TerminalEmulator />
+            <Suspense fallback={null}>
+              <PageTransition />
+            </Suspense>
+            <div className="relative flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <SystemStatus />
+            </div>
+          </KernelProvider>
         </ThemeProvider>
 
         {/* JSON-LD structured data */}

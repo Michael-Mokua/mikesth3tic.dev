@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TerminalSquare, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useKernel } from "@/components/providers/KernelProvider";
 
 export function TerminalEmulator() {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export function TerminalEmulator() {
     const inputRef = useRef<HTMLInputElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
+    const { toggleKernelMode, isKernelMode } = useKernel();
 
     // Toggle via keyboard shortcut (Ctrl + ` or Cmd + `)
     useEffect(() => {
@@ -46,7 +48,11 @@ export function TerminalEmulator() {
 
         switch (cmd) {
             case "help":
-                newOutput.push("Available commands: help, clear, whoami, hire, projects, sudo rm -rf /");
+                newOutput.push("Available commands: help, clear, whoami, hire, projects, kernel, sudo rm -rf /");
+                break;
+            case "kernel":
+                toggleKernelMode();
+                newOutput.push(`Kernel execution trace: ${!isKernelMode ? "ENABLED" : "DISABLED"}`);
                 break;
             case "clear":
                 setOutput(["Mikesth3tic OS v1.0.0"]);

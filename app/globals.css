@@ -260,10 +260,10 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-transparent text-foreground font-sans antialiased;
     background-image:
-      radial-gradient(ellipse 80% 80% at 50% -20%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
-      radial-gradient(ellipse 60% 60% at 80% 100%, rgba(168, 85, 247, 0.03) 0%, transparent 50%);
+      radial-gradient(ellipse 80% 80% at 50% -20%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 60% at 80% 100%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
   }
 
   /* Headings */

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, X, Send, Minimize2, Loader2, Trash2 } from "lucide-react";
+import { useSound } from "@/hooks/useSound";
 
 interface Message {
     role: "user" | "assistant";
@@ -39,6 +40,7 @@ function saveMessages(messages: Message[]) {
 export function AIChatbot() {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([DEFAULT_GREETING]);
+    const { playHover, playClick, playType, playSuccess } = useSound();
 
     // Load history after mount to prevent hydration mismatch
     useEffect(() => {
@@ -69,6 +71,7 @@ export function AIChatbot() {
         if (!input.trim() || loading) return;
         const userMessage = input.trim();
         setInput("");
+        playType();
         setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
         setLoading(true);
 
@@ -84,6 +87,7 @@ export function AIChatbot() {
 
             if (!res.ok) throw new Error("Failed to get response");
             const data = await res.json();
+            playSuccess();
             setMessages((prev) => [
                 ...prev,
                 { role: "assistant", content: data.reply || "Sorry, I couldn't process that." },
@@ -134,7 +138,10 @@ export function AIChatbot() {
                             </div>
                             <div className="flex items-center gap-1">
                                 <button
-                                    onClick={clearHistory}
+                                    onClick={() => {
+                                        clearHistory();
+                                        playClick();
+                                    }}
                                     className="p-1.5 rounded-lg hover:bg-white/[0.05] text-muted-foreground hover:text-red-400 transition-colors"
                                     aria-label="Clear chat history"
                                     title="Clear conversation"
@@ -197,7 +204,10 @@ export function AIChatbot() {
                                     aria-label="Chat message"
                                 />
                                 <button
-                                    onClick={sendMessage}
+                                    onClick={() => {
+                                        sendMessage();
+                                        playClick();
+                                    }}
                                     disabled={!input.trim() || loading}
                                     className={`p-1.5 rounded-lg transition-all duration-200 ${input.trim() && !loading
                                         ? "bg-electric-400/20 text-electric-400 hover:bg-electric-400/30"
@@ -218,11 +228,15 @@ export function AIChatbot() {
 
             {/* Toggle button */}
             <motion.button
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={() => {
+                    setOpen((prev) => !prev);
+                    playClick();
+                }}
                 className={`relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 ${open
                     ? "bg-white/[0.08] border border-white/[0.12] text-foreground"
                     : "bg-electric-400 text-dark-900 hover:shadow-electric"
                     }`}
+                onMouseEnter={playHover}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label={open ? "Close AI assistant" : "Open AI assistant"}

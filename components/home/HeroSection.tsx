@@ -7,6 +7,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 
 import { useGreeting } from "@/hooks/useGreeting";
+import { useSound } from "@/hooks/useSound";
 
 const HeroBackground = dynamic(
     () =>
@@ -28,6 +29,14 @@ export function HeroSection() {
     const [roleIndex, setRoleIndex] = useState(0);
     const [displayed, setDisplayed] = useState("");
     const [typing, setTyping] = useState(true);
+    const { playHover, playClick, playAmbient } = useSound();
+
+    useEffect(() => {
+        const stopAmbient = playAmbient();
+        return () => {
+            if (stopAmbient) stopAmbient();
+        };
+    }, [playAmbient]);
 
     useEffect(() => {
         const role = ROLES[roleIndex];
@@ -122,6 +131,8 @@ export function HeroSection() {
                         <Magnetic>
                             <Link
                                 href="/projects"
+                                onMouseEnter={playHover}
+                                onClick={playClick}
                                 className="group relative px-10 py-5 rounded-full bg-white text-black font-bold text-sm tracking-tight transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.2)] overflow-hidden"
                             >
                                 <span className="relative z-10 flex items-center gap-2">
@@ -134,6 +145,8 @@ export function HeroSection() {
                         <Magnetic>
                             <Link
                                 href="/start-project"
+                                onMouseEnter={playHover}
+                                onClick={playClick}
                                 className="px-10 py-5 rounded-full bg-electric-400/[0.1] border border-electric-400/30 text-electric-400 font-bold text-sm tracking-tight transition-all duration-300 hover:bg-electric-400/[0.2] hover:border-electric-400/50"
                             >
                                 Start a Project
