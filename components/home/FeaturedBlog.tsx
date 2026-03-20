@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Clock, Tag } from "lucide-react";
+import { ArrowRight, Clock, Tag, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import type { PostMeta } from "@/lib/mdx";
@@ -48,12 +48,21 @@ export function FeaturedBlog({ posts }: FeaturedBlogProps) {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}
+                                className="relative group"
                             >
                                 <Link
                                     href={`/blog/${post.slug}`}
-                                    className="block glass-hover rounded-[2rem] p-8 card-hover group h-full border border-white/[0.05]"
+                                    className="block liquid-glass rounded-[2.5rem] p-8 card-hover h-full border border-white/[0.05] relative overflow-hidden"
                                     aria-label={`Read: ${post.title}`}
                                 >
+                                    {/* AI Summary Badge */}
+                                    <div className="absolute top-6 right-6 z-20">
+                                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-electric-400/10 border border-electric-400/20">
+                                            <Sparkles className="w-3 h-3 text-electric-400" />
+                                            <span className="text-[8px] font-mono text-electric-400 uppercase tracking-widest">AI SUMMARY</span>
+                                        </div>
+                                    </div>
+
                                     <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono mb-3">
                                         <Clock className="w-3 h-3" />
                                         {post.readingTime}
@@ -61,25 +70,38 @@ export function FeaturedBlog({ posts }: FeaturedBlogProps) {
                                     <h3 className="font-bold text-foreground text-lg leading-snug mb-2 group-hover:text-electric-400 transition-colors">
                                         {post.title}
                                     </h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3">
+                                    <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
                                         {post.excerpt}
                                     </p>
-                                    <div className="flex items-center justify-between">
+                                    
+                                    {/* AI Summary Content (Hover) */}
+                                    <div className="absolute inset-0 bg-dark-950/95 backdrop-blur-md p-8 flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                        <span className="text-[10px] font-mono text-electric-400 mb-2 uppercase tracking-[0.3em]">SYSTEM_EXTRACTION_SUCCESS</span>
+                                        <p className="text-xs text-white/80 leading-relaxed font-mono italic">
+                                            "A critical analysis of {post.title.toLowerCase()}, focusing on the intersection of scalability and architectural performance in 2026 systems."
+                                        </p>
+                                        <div className="mt-6 flex items-center gap-2 text-[10px] font-bold text-electric-400 uppercase tracking-widest">
+                                            Read Full Node <ArrowRight className="w-3 h-3" />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between mt-auto">
                                         <div className="flex flex-wrap gap-1.5">
                                             {(post.tags || []).slice(0, 2).map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className="text-xs px-2 py-0.5 rounded-full bg-electric-400/10 text-electric-400 border border-electric-400/20 font-mono"
+                                                    className="text-[9px] px-2 py-0.5 rounded-full bg-white/5 text-white/40 border border-white/10 font-mono uppercase"
                                                 >
                                                     {tag}
                                                 </span>
                                             ))}
                                         </div>
-                                        <span className="text-xs text-muted-foreground">{formatDate(post.date)}</span>
+                                        <span className="text-[10px] font-mono text-muted-foreground">{formatDate(post.date)}</span>
                                     </div>
                                 </Link>
                             </motion.div>
                         ))}
+
                     </div>
                 )}
             </div>

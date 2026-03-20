@@ -5,27 +5,34 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
-import { Menu, X, Sun, Moon, Command } from "lucide-react";
+import { Menu, X, Sun, Moon, Command, Globe, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SpotifyWidget } from "@/components/ui/SpotifyWidget";
 import { Logo } from "@/components/ui/Logo";
+import { useTranslation, Language } from "@/components/providers/LanguageProvider";
+
 
 const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/projects", label: "Projects" },
-    { href: "/blog", label: "Blog" },
-    { href: "/now", label: "Now" },
-    { href: "/resume", label: "Resume" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: "nav.home" },
+    { href: "/projects", label: "nav.work" },
+    { href: "/about", label: "nav.about" },
+    { href: "/lab", label: "nav.lab" },
+    { href: "/vault", label: "nav.vault" },
+    { href: "/blog", label: "nav.blog" },
 ];
+
+
+
 
 export function Navbar() {
     const pathname = usePathname();
     const { theme, setTheme } = useTheme();
+    const { language, setLanguage, t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
+    const [isLangOpen, setIsLangOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [mounted, setMounted] = useState(false);
+
 
     // Only the homepage has a dark 3D hero — transparent treatment only applies there
     const isHome = pathname === "/";
@@ -76,9 +83,10 @@ export function Navbar() {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-electric-400 shadow-[0_0_8px_var(--electric-400)]"></span>
                         </span>
-                        STATUS: READY FOR SCALE
+                        Available for Projects
                     </div>
                 </div>
+
 
                 {/* Desktop nav */}
                 <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
@@ -87,7 +95,7 @@ export function Navbar() {
                             key={link.href}
                             href={link.href}
                             className={cn(
-                                "relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 group",
+                                "relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 group text-nowrap",
                                 pathname === link.href
                                     ? "text-electric-400"
                                     : isTransparent
@@ -108,10 +116,11 @@ export function Navbar() {
                                     transition={{ type: "spring", duration: 0.5 }}
                                 />
                             )}
-                            <span className="relative">{link.label}</span>
+                            <span className="relative">{t(link.label)}</span>
                         </Link>
                     ))}
                 </nav>
+
 
                 {/* Right side controls */}
                 <div className="flex items-center gap-4">
@@ -170,6 +179,57 @@ export function Navbar() {
                             </AnimatePresence>
                         </button>
                     )}
+
+                    {/* Language Switcher */}
+                    <div className="relative">
+                        <button
+                            onClick={() => setIsLangOpen(!isLangOpen)}
+                            className={cn(
+                                "flex items-center gap-1.5 px-2 py-1.5 rounded-md border text-[10px] font-bold transition-all duration-300",
+                                isTransparent
+                                    ? "bg-white/5 border-white/10 text-white/50 hover:bg-white/10"
+                                    : "bg-muted border-border text-muted-foreground hover:bg-accent"
+                            )}
+                        >
+                            <Globe className="w-3 h-3" />
+                            {language}
+                            <ChevronDown className={cn("w-2.5 h-2.5 transition-transform", isLangOpen && "rotate-180")} />
+                        </button>
+
+                        <AnimatePresence>
+                            {isLangOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    className="absolute right-0 mt-2 w-32 glass border border-white/10 rounded-xl overflow-hidden shadow-2xl p-1 z-50"
+                                >
+                                    {(["EN", "SW", "FR", "ES"] as Language[]).map((lang) => (
+                                        <button
+                                            key={lang}
+                                            onClick={() => {
+                                                setLanguage(lang);
+                                                setIsLangOpen(false);
+                                            }}
+                                            className={cn(
+                                                "w-full px-3 py-2 text-left text-[10px] font-bold rounded-lg transition-colors",
+                                                language === lang
+                                                    ? "bg-electric-400 text-dark-950"
+                                                    : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                                            )}
+                                        >
+                                            {lang === "EN" && "English"}
+                                            {lang === "SW" && "Kiswahili"}
+                                            {lang === "FR" && "Français"}
+                                            {lang === "ES" && "Español"}
+                                        </button>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+
 
                     {/* Primary CTA */}
                     <Link

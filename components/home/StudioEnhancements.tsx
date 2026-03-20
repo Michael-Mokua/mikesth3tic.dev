@@ -1,43 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Cpu, Layers, Database, Shield, Zap, Layout, Terminal } from "lucide-react";
+import { Cpu, Layers, Database, Shield, Zap } from "lucide-react";
 import { useState } from "react";
-
-const PROCESS_STEPS = [
-    {
-        id: "strategy",
-        title: "Strategy & Intelligence",
-        icon: Terminal,
-        description: "Aligning product vision with technical feasibility. We define the core logic and system requirements.",
-        color: "text-blue-400",
-        bg: "bg-blue-400/10",
-    },
-    {
-        id: "ux",
-        title: "Concept & UX Engineering",
-        icon: Layout,
-        description: "Designing intuitive interfaces for complex systems. Priority on user flow and accessibility.",
-        color: "text-electric-400",
-        bg: "bg-electric-400/10",
-    },
-    {
-        id: "engineering",
-        title: "Product Engineering",
-        icon: Cpu,
-        description: "Writing high-performance, scalable code. Building the engines that power your vision.",
-        color: "text-neon-400",
-        bg: "bg-neon-400/10",
-    },
-    {
-        id: "scale",
-        title: "Deployment & Scaling",
-        icon: Zap,
-        description: "Cloud orchestration and performance tuning. Ensuring your system remains fast under load.",
-        color: "text-yellow-400",
-        bg: "bg-yellow-400/10",
-    },
-];
 
 const STACK_LAYERS = [
     {
@@ -66,51 +31,6 @@ const STACK_LAYERS = [
     }
 ];
 
-export function StudioProcess() {
-    return (
-        <section className="py-24 relative overflow-hidden">
-            <div className="container-custom">
-                <motion.div
-                    className="text-center mb-20"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase tracking-tighter">
-                        The <span className="text-gradient">Studio Process</span>
-                    </h2>
-                    <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                        Our engineering lifecycle is designed for speed, precision, and long-term scalability.
-                    </p>
-                </motion.div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {PROCESS_STEPS.map((step, idx) => (
-                        <motion.div
-                            key={step.id}
-                            className="glass p-8 rounded-[2.5rem] border border-white/5 hover:border-electric-400/30 transition-all group relative overflow-hidden"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                        >
-                            <div className={`w-14 h-14 rounded-2xl ${step.bg} flex items-center justify-center mb-6 border border-white/5`}>
-                                <step.icon className={`w-7 h-7 ${step.color}`} />
-                            </div>
-                            <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                {step.description}
-                            </p>
-                            <div className="absolute -bottom-4 -right-4 text-6xl font-black text-white/[0.02] italic tracking-tighter">
-                                0{idx + 1}
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-}
 
 export function VaultExplorer() {
     const [activeLayer, setActiveLayer] = useState(0);

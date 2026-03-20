@@ -39,11 +39,12 @@ export function BlogList({ initialPosts, tags }: BlogListProps) {
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-electric-400 transition-colors" />
                     <input
                         type="text"
-                        placeholder="Search articles..."
+                        placeholder="Search Core Knowledge Bases..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full bg-white/[0.04] border border-white/[0.06] rounded-xl pl-11 pr-4 py-3 text-sm focus:border-electric-400/30 transition-all outline-none"
+                        className="w-full bg-black/40 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm focus:border-electric-400/50 transition-all outline-none"
                     />
+
                 </div>
 
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
@@ -73,7 +74,8 @@ export function BlogList({ initialPosts, tags }: BlogListProps) {
                         transition={{ delay: i * 0.05 }}
                         className="group"
                     >
-                        <Link href={`/blog/${post.slug}`} className="block glass-hover rounded-3xl p-8 card-hover h-full border border-white/[0.05]">
+                        <Link href={`/blog/${post.slug}`} className="block liquid-glass rounded-[2.5rem] p-8 border border-white/5 hover:border-electric-400/20 transition-all duration-500 card-hover h-full">
+
                             <div className="flex flex-col h-full">
                                 <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground mb-4">
                                     {post.date && post.date !== "2024-01-01" && (

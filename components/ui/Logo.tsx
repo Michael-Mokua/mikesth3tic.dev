@@ -36,11 +36,23 @@ export function Logo({ className, onClick }: LogoProps) {
         // Pick a random logo on mount
         const randomIndex = Math.floor(Math.random() * LOGO_ANIMATIONS.length);
         setCurrentLogo(LOGO_ANIMATIONS[randomIndex]);
+
+        // Auto-cycle logo every 8 seconds
+        const interval = setInterval(() => {
+            cycleLogo();
+        }, 8000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const cycleLogo = () => {
-        const randomIndex = Math.floor(Math.random() * LOGO_ANIMATIONS.length);
-        setCurrentLogo(LOGO_ANIMATIONS[randomIndex]);
+        setCurrentLogo(prev => {
+            let next;
+            do {
+                next = LOGO_ANIMATIONS[Math.floor(Math.random() * LOGO_ANIMATIONS.length)];
+            } while (next === prev);
+            return next;
+        });
     };
 
     return (
@@ -86,7 +98,7 @@ export function Logo({ className, onClick }: LogoProps) {
                         </span>
                     </div>
                     <span className="text-[10px] font-mono font-bold tracking-[0.35em] text-electric-400 uppercase opacity-90 mt-0.5">
-                        Architect .DEV
+                        Creative Software Studio
                     </span>
                 </div>
             </div>

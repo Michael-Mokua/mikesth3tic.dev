@@ -14,7 +14,9 @@ const geistMono = Geist_Mono({
 
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import { KernelProvider } from "@/components/providers/KernelProvider";
+
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SystemStatus } from "@/components/layout/SystemStatus";
@@ -27,6 +29,10 @@ import { CommandCenter } from "@/components/ui/CommandCenter";
 import { DevHUD } from "@/components/ui/DevHUD";
 import { TerminalEmulator } from "@/components/ui/TerminalEmulator";
 import { cn } from "@/lib/utils";
+import { NodeUnlock } from "@/components/ui/NodeUnlock";
+import { NexusOrchestrator } from "@/components/ui/NexusOrchestrator";
+
+
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mikesth3tic.dev";
 
@@ -124,25 +130,31 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <KernelProvider>
-            <ClientOverlays />
-            <FluidBackground />
-            <CustomCursor />
-            <KernelOverlays />
-            <CommandCenter />
-            <DevHUD />
-            <TerminalEmulator />
-            <Suspense fallback={null}>
-              <PageTransition />
-            </Suspense>
-            <div className="relative flex min-h-screen flex-col">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <SystemStatus />
-            </div>
-          </KernelProvider>
+          <LanguageProvider>
+            <KernelProvider>
+              <ClientOverlays />
+              <FluidBackground />
+              <CustomCursor />
+              <KernelOverlays />
+              <CommandCenter />
+              <DevHUD />
+              <TerminalEmulator />
+              <Suspense fallback={null}>
+                <PageTransition />
+              </Suspense>
+              <div className="relative flex min-h-screen flex-col">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <SystemStatus />
+              </div>
+              <NodeUnlock />
+              <NexusOrchestrator />
+
+            </KernelProvider>
+          </LanguageProvider>
         </ThemeProvider>
+
 
         {/* JSON-LD structured data */}
         <script

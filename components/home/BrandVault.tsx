@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 const LOGO_ANIMATIONS = [
     "/logos/grok_video_2026-03-13-09-56-00.mp4",
@@ -22,20 +22,37 @@ const LOGO_ANIMATIONS = [
     "/logos/grok_video_2026-03-13-10-32-14.mp4"
 ];
 
-function VaultItem({ src }: { src: string }) {
+function VaultItem({ src, autoPlay, delay = 0 }: { src: string; autoPlay?: boolean; delay?: number }) {
     const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        if (autoPlay && videoRef.current) {
+            const timeout = setTimeout(() => {
+                videoRef.current?.play().catch(() => {});
+            }, delay * 1000);
+            return () => clearTimeout(timeout);
+        }
+    }, [autoPlay, delay]);
 
     return (
         <motion.div
             className="relative aspect-square rounded-2xl overflow-hidden bg-black border border-white/5 hover:border-electric-400/50 transition-colors group cursor-crosshair"
-            onHoverStart={() => videoRef.current?.play()}
+            onHoverStart={() => {
+                if (!autoPlay) {
+                    const playPromise = videoRef.current?.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {});
+                    }
+                }
+            }}
             onHoverEnd={() => {
-                if (videoRef.current) {
+                if (!autoPlay && videoRef.current) {
                     videoRef.current.pause();
                     videoRef.current.currentTime = 0;
                 }
             }}
         >
+
             <video
                 ref={videoRef}
                 src={src}
@@ -46,16 +63,17 @@ function VaultItem({ src }: { src: string }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                 <span className="text-[10px] font-mono text-electric-400 tracking-widest uppercase">
-                    SYS.IDENT_{src.slice(-10, -4)}
+                    ID: {src.slice(-10, -4)}
                 </span>
             </div>
         </motion.div>
     );
 }
 
-export function BrandVault() {
+export function BrandVault({ autoPlayAll }: { autoPlayAll?: boolean }) {
     return (
-        <section className="py-24 relative overflow-hidden">
+        <section id="vault" className="py-24 relative overflow-hidden">
+
             <div className="container-custom relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <motion.div
@@ -63,7 +81,7 @@ export function BrandVault() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                     >
-                        <p className="text-xs font-mono text-electric-400 mb-4 tracking-widest uppercase">// BRAND IDENTITY</p>
+                        <p className="text-xs font-mono text-electric-400 mb-4 tracking-widest uppercase">Visual Intelligence</p>
                         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">
                             The <span className="text-gradient">Vault</span>
                         </h2>
@@ -75,7 +93,10 @@ export function BrandVault() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
                     >
-                        Hover to initialize core generation layers. These 16 dynamic sequences form the visual intelligence of the studio.
+                        {autoPlayAll 
+                            ? "Core generation layers initialized. These dynamic sequences form the visual intelligence of the studio."
+                            : "Hover to initialize core generation layers. These 16 dynamic sequences form the visual intelligence of the studio."
+                        }
                     </motion.p>
                 </div>
 
@@ -88,7 +109,11 @@ export function BrandVault() {
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ delay: idx * 0.05 }}
                         >
-                            <VaultItem src={src} />
+                            <VaultItem 
+                                src={src} 
+                                autoPlay={autoPlayAll} 
+                                delay={idx * 0.2} 
+                            />
                         </motion.div>
                     ))}
                 </div>

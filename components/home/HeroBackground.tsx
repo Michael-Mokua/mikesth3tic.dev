@@ -26,18 +26,23 @@ function ParticleCloud() {
     });
 
     return (
-        <Points ref={meshRef} positions={positions} stride={3} frustumCulled={false}>
-            <PointMaterial
-                transparent
-                color="#00d4ff"
-                size={0.012}
-                sizeAttenuation
-                depthWrite={false}
-                opacity={0.4}
-            />
-        </Points>
+        <group>
+            <Points ref={meshRef} positions={positions} stride={3} frustumCulled={false}>
+                <PointMaterial
+                    transparent
+                    color="#00d4ff"
+                    size={0.015}
+                    sizeAttenuation
+                    depthWrite={false}
+                    opacity={0.6}
+                />
+            </Points>
+            {/* Connecting lines - simplified with a thin sphere or just the points for now */}
+            {/* To save performance, we use the Points and a low-opacity material */}
+        </group>
     );
 }
+
 
 function Scene() {
     return (

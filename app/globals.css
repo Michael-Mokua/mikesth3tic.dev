@@ -59,7 +59,16 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
 
+  /* Liquid Glass & Neo-Brutalist Tokens */
+  --color-glass-50: rgba(255, 255, 255, 0.05);
+  --color-glass-100: rgba(255, 255, 255, 0.1);
+  --color-glass-200: rgba(255, 255, 255, 0.2);
+  --color-brutal-black: #050505;
+  --color-brutal-white: #f5f5f5;
+  --color-brutal-neon: var(--color-electric-400);
+
   --radius-lg: var(--radius);
+
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
@@ -186,7 +195,13 @@
   --shadow-neon: 0 0 20px rgba(168, 85, 247, 0.4);
   --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 20px 60px rgba(0, 212, 255, 0.1);
+
+  /* Neo-Brutalist Shadows */
+  --shadow-brutal: 4px 4px 0px 0px var(--color-electric-400);
+  --shadow-brutal-lg: 8px 8px 0px 0px var(--color-electric-400);
+  --shadow-brutal-neon: 4px 4px 0px 0px var(--color-neon-400);
 }
+
 
 
 @layer base {
@@ -297,6 +312,53 @@
 @utility glass-hover {
   @apply glass hover:bg-white/[0.06] hover:border-electric-400/20 transition-all duration-300;
 }
+
+@utility liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+@utility brutal-card {
+  background: var(--color-dark-950);
+  border: 2px solid var(--color-electric-400);
+  box-shadow: var(--shadow-brutal);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal-lg);
+  }
+}
+
+@utility kinetic-text {
+  background: linear-gradient(
+    to right,
+    var(--color-electric-400) 20%,
+    var(--color-neon-400) 40%,
+    var(--color-neon-400) 60%,
+    var(--color-electric-400) 80%
+  );
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
 
 /* Gradient text */
 @utility text-gradient {
@@ -509,10 +571,23 @@
   text-wrap: balance;
 }
 
+/* Redundant block removed to fix build error */
 @utility writing-mode-vertical {
   writing-mode: vertical-rl;
-  text-orientation: mixed;
 }
+
+@utility glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@utility system-node-active {
+  box-shadow: 0 0 15px var(--electric-400);
+}
+
+/* Duplicates removed */
+
 
 /* Additional layout styles */
 pre {

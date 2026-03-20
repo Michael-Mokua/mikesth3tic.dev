@@ -51,18 +51,9 @@ export function SpotifyWidget() {
     }
 
     if (!data || !data.title) {
-        return (
-            <div className="flex items-center gap-4 p-4 rounded-3xl bg-white/[0.02] border border-white/[0.05] max-w-sm">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-                    <Music className="w-5 h-5 text-green-500" />
-                </div>
-                <div>
-                    <p className="text-sm font-bold text-foreground">Not Playing</p>
-                    <p className="text-xs text-muted-foreground">Spotify Offline</p>
-                </div>
-            </div>
-        );
+        return null; // Delete placeholders as requested
     }
+
 
     return (
         <a

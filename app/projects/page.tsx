@@ -16,6 +16,10 @@ import {
     ArrowRight
 } from "lucide-react";
 import Link from "next/link";
+import { Project3DExplorer } from "@/components/ui/Project3DExplorer";
+import { cn } from "@/lib/utils";
+import { Cuboid as Cube } from "lucide-react";
+
 
 interface Repo {
     id: number;
@@ -101,41 +105,30 @@ export default function ProjectsPage() {
                     </p>
                 </motion.div>
 
-                {/* Featured Case Studies Grid (Dynamic from MDX) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-32">
+                {/* Featured Case Studies Bento Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
                     {loading ? (
-                        Array.from({ length: 4 }).map((_, i) => (
-                            <div key={i} className="h-64 glass rounded-3xl animate-pulse bg-white/5" />
+                        Array.from({ length: 6 }).map((_, i) => (
+                            <div key={i} className="h-80 glass rounded-[2.5rem] animate-pulse bg-white/5" />
                         ))
                     ) : (
                         caseStudies.map((study, idx) => (
-                            <motion.div
-                                key={study.slug}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1 }}
-                            >
-                                <Link href={`/projects/${study.slug}`} className="group block h-full glass rounded-3xl p-8 border border-electric-400/20 hover:border-electric-400/50 hover:bg-white/[0.04] transition-all duration-300 relative overflow-hidden">
-                                    <div className="absolute top-0 right-0 w-64 h-64 bg-electric-400/10 rounded-full blur-[80px] -mr-32 -mt-32 group-hover:bg-electric-400/20 transition-colors" />
-
-                                    <h3 className="text-2xl font-bold mb-3 group-hover:text-electric-400 transition-colors relative z-10">{study.title}</h3>
-                                    <p className="text-muted-foreground leading-relaxed mb-6 relative z-10">{study.excerpt || study.description}</p>
-
-                                    <div className="flex flex-wrap gap-2 mb-8 relative z-10">
-                                        {(study.technologies || study.tags || []).map((t: string) => (
-                                            <span key={t} className="px-3 py-1 bg-white/[0.05] border border-white/[0.05] rounded-full text-xs font-mono text-muted-foreground">{t}</span>
-                                        ))}
-                                    </div>
-
-                                    <div className="flex items-center gap-2 text-electric-400 font-bold text-sm mt-auto relative z-10">
-                                        Read Architecture <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                    </div>
-                                </Link>
-                            </motion.div>
+                            <ProjectBentoCard 
+                                key={study.slug} 
+                                project={{
+                                    ...study,
+                                    type: study.slug === "aura" ? "aura" : 
+                                          study.slug === "strideos" ? "strideos" : 
+                                          study.slug === "agri-value-connect" ? "agri" : "xgaffer",
+                                    className: idx === 0 ? "lg:col-span-2 lg:row-span-2" : 
+                                               idx === 3 ? "lg:col-span-2" : "lg:col-span-1"
+                                }} 
+                                index={idx} 
+                            />
                         ))
                     )}
                 </div>
+
 
                 {/* divider */}
                 <div className="w-full h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-24" />
@@ -186,10 +179,11 @@ export default function ProjectsPage() {
                 {/* Grid */}
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-40">
-                        <Loader2 className="w-10 h-10 text-electric-400 animate-spin mb-4" />
-                        <p className="font-mono text-sm text-muted-foreground">SYNCING REPOSITORIES...</p>
+                        <div className="w-10 h-10 border-2 border-electric-400/20 border-t-electric-400 rounded-full animate-spin mb-4" />
+                        <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-[0.3em]">Querying_GitHub_Nodes...</p>
                     </div>
                 ) : (
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <AnimatePresence mode="popLayout">
                             {filteredRepos.map((repo, i) => (
@@ -221,8 +215,9 @@ export default function ProjectsPage() {
                                         {repo.name}
                                     </h3>
                                     <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-6 flex-1">
-                                        {repo.description || "No description provided."}
+                                        {repo.description || "SYSTEM.ENTITY_IDENTIFIED // NO_METADATA_EXTRACTED"}
                                     </p>
+
 
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
@@ -260,3 +255,83 @@ export default function ProjectsPage() {
         </div>
     );
 }
+
+function ProjectBentoCard({ project, index }: { project: any; index: number }) {
+    const [show3D, setShow3D] = useState(false);
+
+    return (
+        <motion.div
+            className={cn(
+                "group relative overflow-hidden rounded-[2.5rem] border p-8 flex flex-col transition-all duration-500",
+                project.className,
+                "bg-white/[0.02] border-white/5 hover:border-electric-400/30",
+                "hover:shadow-2xl hover:shadow-electric-400/10"
+            )}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+        >
+            <div className="relative z-20 h-full flex flex-col">
+                <div className="flex items-start justify-between mb-6">
+                    <div>
+                        <h3 className="text-2xl font-black text-foreground mb-1 tracking-tighter uppercase group-hover:text-electric-400 transition-colors">
+                            {project.title}
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                            {(project.technologies || project.tags || []).slice(0, 3).map((tag: string) => (
+                                <span key={tag} className="text-[9px] font-mono text-white/40 uppercase tracking-widest">{tag}</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <p className={cn(
+                    "text-muted-foreground text-sm leading-relaxed mb-8",
+                    project.className.includes("col-span-2") ? "max-w-md" : "max-w-xs"
+                )}>
+                    {project.excerpt || project.description}
+                </p>
+
+                <div className="mt-auto flex flex-wrap gap-4">
+                    <Link
+                        href={`/projects/${project.slug}`}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-electric-400 transition-all"
+                    >
+                        Read Architecture
+                    </Link>
+                    <button
+                        onClick={() => setShow3D(!show3D)}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/[0.05] border border-white/[0.1] text-white font-bold text-xs uppercase tracking-widest hover:bg-white/[0.1] transition-all"
+                    >
+                        <Cube className={cn("w-3.5 h-3.5", show3D && "text-electric-400 animate-pulse")} />
+                        {show3D ? "Exit 3D" : "Explore in 3D"}
+                    </button>
+                </div>
+            </div>
+
+            {/* Immersive 3D Explorer Layer */}
+            <div className={cn(
+                "absolute inset-0 transition-all duration-700 ease-in-out pointer-events-none",
+                show3D ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-110"
+            )}>
+                <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-10" />
+                <Project3DExplorer type={project.type} className="w-full h-full relative z-20" />
+                <div className="absolute top-6 right-6 z-30">
+                     <button
+                        onClick={() => setShow3D(false)}
+                        className="p-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
+                    >
+                        <ArrowRight className="w-4 h-4 rotate-180" />
+                    </button>
+                </div>
+            </div>
+
+            {/* Background Decorative Element */}
+            <div className="absolute -bottom-10 -right-10 text-[120px] font-black text-white/[0.02] italic tracking-tighter select-none pointer-events-none transition-all duration-500 group-hover:text-white/[0.05]">
+                {index + 1}
+            </div>
+        </motion.div>
+    );
+}
+
