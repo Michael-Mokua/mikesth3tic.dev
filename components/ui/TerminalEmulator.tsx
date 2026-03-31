@@ -48,7 +48,14 @@ export function TerminalEmulator() {
 
         switch (cmd) {
             case "help":
-                newOutput.push("Available commands: help, clear, whoami, hire, projects, kernel, sudo rm -rf /");
+                newOutput.push("Available commands: help, clear, whoami, hire, projects, kernel, sudo rm -rf /, ls, open");
+                break;
+            case "ls":
+                newOutput.push("intel/");
+                break;
+            case "ls intel":
+            case "ls intel/":
+                newOutput.push("manifesto.pdf  systems.pdf  ai-research.pdf");
                 break;
             case "kernel":
                 toggleKernelMode();
@@ -81,7 +88,26 @@ export function TerminalEmulator() {
             case "":
                 break;
             default:
-                newOutput.push(`Command not found: ${cmd}`);
+                if (cmd.startsWith("open ")) {
+                    const arg = cmd.slice(5).trim();
+                    if (arg === "intel/manifesto.pdf") {
+                        newOutput.push("Opening manifesto inside Secure Viewer...");
+                        router.push("/intel/manifesto");
+                        setTimeout(() => setIsOpen(false), 500);
+                    } else if (arg === "intel/systems.pdf") {
+                        newOutput.push("Opening systems architecture inside Secure Viewer...");
+                        router.push("/intel/systems");
+                        setTimeout(() => setIsOpen(false), 500);
+                    } else if (arg === "intel/ai-research.pdf") {
+                        newOutput.push("Opening AI research portfolio inside Secure Viewer...");
+                        router.push("/intel/ai-research");
+                        setTimeout(() => setIsOpen(false), 500);
+                    } else {
+                        newOutput.push(`open: ${arg}: No secure clearance found for this file`);
+                    }
+                } else {
+                    newOutput.push(`Command not found: ${cmd}`);
+                }
         }
 
         setOutput(newOutput);

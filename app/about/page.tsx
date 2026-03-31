@@ -87,11 +87,24 @@ export default function AboutPage() {
                         <div className="prose-custom">
                             <h2 className="text-xs font-mono text-electric-400 uppercase tracking-[0.4em] mb-8 font-bold italic">// STUDIO_MANIFESTO</h2>
                             <p className="text-muted-foreground leading-relaxed font-light">
-                                MIKESTH3TIC (M-STUDIO) is an elite software architecture firm specializing in the deployment of high-fidelity digital systems. We don't just build applications; we engineer aesthetic dominance using the cutting edge of Next.js 15, Rust-based binaries, and distributed Agentic AI. 
+                                MIKESTH3TIC.DEV is an AI Software Studio founded directly at the intersection of artificial intelligence and intentional engineering. We do not build generic software. We build the kind of products that shift markets, automate operations, and redefine what digital infrastructure looks like.
                             </p>
                             <p className="text-muted-foreground leading-relaxed font-light">
-                                Our goal is to replace the generic with the exceptional. By treating <strong>Performance as a UX Feature</strong> and <strong>Aesthetics as a Functional Requirement</strong>, we deliver products that set new standards for what software can be.
+                                Our mission is to <strong>simplify complexity through smart design</strong>, integrate AI into daily workflows, and engineer secure, human-centered digital ecosystems.
                             </p>
+                            <p className="text-muted-foreground leading-relaxed font-light">
+                                Our vision is to lead AI-driven analytics across East Africa, scale intelligent SaaS products globally, and augment human potential through autonomous systems. We believe <strong>AI IS INFRASTRUCTURE, NOT A FEATURE</strong>, and that complexity is our competitive edge.
+                            </p>
+                            <div className="mt-8 space-y-2">
+                                <h3 className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-4">CORE_FOCUS_AREAS</h3>
+                                <ul className="list-disc pl-4 space-y-2 text-muted-foreground text-sm font-light">
+                                    <li>AI Advisory Platforms</li>
+                                    <li>SaaS Product Engineering</li>
+                                    <li>Intelligent Financial Systems</li>
+                                    <li>Multi-Agent Automation</li>
+                                    <li>Scalable Digital Infrastructure</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 

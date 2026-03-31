@@ -18,6 +18,7 @@ const navLinks = [
     { href: "/about", label: "nav.about" },
     { href: "/lab", label: "nav.lab" },
     { href: "/vault", label: "nav.vault" },
+    { href: "/intel", label: "Intel" },
     { href: "/blog", label: "nav.blog" },
 ];
 

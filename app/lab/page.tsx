@@ -28,6 +28,62 @@ const experiments = [
         tech: ["CSS", "Tailwind v4"],
         status: "CORE",
         path: "/blog/webgl-performance"
+    },
+    {
+        id: "exp-04",
+        title: "ORACLE",
+        description: "NSE Market Intelligence. Real-time data integration and AI-driven signals for the Nairobi Securities Exchange.",
+        tech: ["Python", "FastAPI", "React"],
+        status: "ACTIVE",
+        path: "/lab"
+    },
+    {
+        id: "exp-05",
+        title: "ARIA",
+        description: "Adaptive Research & Intelligence Assistant. A multi-agent framework designed for continuous, autonomous research.",
+        tech: ["LangChain", "OpenAI", "Next.js"],
+        status: "IN_DEV",
+        path: "/lab"
+    },
+    {
+        id: "exp-06",
+        title: "SYNAPSE",
+        description: "AI Memory OS utilizing RAG and Knowledge Graphs to create a persistent system memory.",
+        tech: ["Vector DB", "RAG", "GraphQL"],
+        status: "AWAITING",
+        path: "/lab"
+    },
+    {
+        id: "exp-07",
+        title: "FORGE",
+        description: "AI App Builder enabling rapid prototype code generation for non-technical users and SMEs.",
+        tech: ["LLMs", "AST", "React"],
+        status: "AWAITING",
+        path: "/lab"
+    },
+    {
+        id: "exp-08",
+        title: "PHANTOM",
+        description: "Competitive Intelligence Engine. Deploys autonomous web scrapers for market landscape analysis.",
+        tech: ["Puppeteer", "AI Extraction", "Node.js"],
+        status: "AWAITING",
+        path: "/lab"
+    },
+    {
+        id: "exp-09",
+        title: "ECHO",
+        description: "AI Voice Identity Platform providing self-hosted, extremely low-latency voice cloning.",
+        tech: ["WebRTC", "PyTorch", "Rust"],
+        status: "AWAITING",
+        path: "/lab"
+    },
+    {
+        id: "exp-10",
+        title: "NEXUS",
+        description: "Multi-Agent Workflow Automation. Advanced orchestration framework tying together disparate AI nodes.",
+        tech: ["Kafka", "Redis", "TypeScript"],
+        status: "AWAITING",
+        path: "/lab"
     }
 ];
 

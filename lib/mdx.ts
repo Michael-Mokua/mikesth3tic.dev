@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
-type ContentType = "blog" | "case-studies";
+type ContentType = "blog" | "case-studies" | "intel";
 
 const getContentDir = (type: ContentType) => path.join(process.cwd(), "content", type);
 
