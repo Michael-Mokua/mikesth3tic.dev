@@ -1,165 +1,239 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Scan, CheckCircle, Smartphone, Send, ArrowRight, Lock } from "lucide-react";
+import { motion } from "framer-motion";
+import { Mail, Send, CheckCircle2, Loader2, ArrowUpRight, MessageSquare, Linkedin } from "lucide-react";
+import { toast } from "@/components/ui/Toaster";
 
 export function BiometricContact() {
-    const [step, setStep] = useState(1); // 1: Initial, 2: Scanning, 3: Form, 4: Success
-    const [progress, setProgress] = useState(0);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "New Project / Collaboration",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
-    const startScan = () => {
-        setStep(2);
-        let p = 0;
-        const interval = setInterval(() => {
-            p += 2;
-            setProgress(p);
-            if (p >= 100) {
-                clearInterval(interval);
-                setStep(3);
-            }
-        }, 30);
-    };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-    return (
-        <section className="section-padding bg-dark-950/80 border-t border-white/5">
-            <div className="container-custom max-w-4xl mx-auto">
-                <div className="text-center mb-16">
-                    <span className="text-[10px] font-mono text-electric-400 uppercase tracking-[0.5em] font-bold block mb-4">
-                        // PROTOCOL_256
-                    </span>
-                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">
-                        Secure <span className="text-gradient">Handshake</span>
-                    </h2>
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setSent(true);
+        setFormData({ name: "", email: "", subject: "New Project / Collaboration", message: "" });
+        toast("Message sent successfully! I'll get back to you within 24 hours.", "success");
+      } else {
+        toast("Message failed to send. Please reach out directly via mikestheticdev@gmail.com", "error");
+      }
+    } catch {
+      toast("Something went wrong. Please email directly to mikestheticdev@gmail.com", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section id="contact" className="section-padding relative border-t border-white/[0.06]">
+      <div className="container-custom">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-14 space-y-3"
+          >
+            <p className="text-xs font-mono text-amber-400 tracking-[0.3em] uppercase">
+              // Get In Touch
+            </p>
+            <h2 className="text-3xl sm:text-5xl font-black text-foreground">
+              Let&apos;s Build <span className="text-gradient">Something Remarkable.</span>
+            </h2>
+            <p className="text-sm text-zinc-400 max-w-xl mx-auto">
+              Have a project, job opportunity, or research collaboration in mind? Send a note below or reach out directly to my inbox.
+            </p>
+          </motion.div>
+
+          {/* Contact Card with Form & Direct Details */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            {/* Direct Contact Side */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="md:col-span-5 space-y-4"
+            >
+              <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] space-y-4">
+                <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-amber-400" />
+                  Direct Inboxes
+                </h3>
+
+                <div className="space-y-3">
+                  <a
+                    href="mailto:mikestheticdev@gmail.com"
+                    className="block p-3 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-amber-400/30 transition-all group"
+                  >
+                    <p className="text-[10px] font-mono text-zinc-500 uppercase">Work / Studio</p>
+                    <p className="text-xs font-mono font-bold text-amber-400 group-hover:underline">
+                      mikestheticdev@gmail.com
+                    </p>
+                  </a>
+
+                  <a
+                    href="mailto:michaelcartelo03@gmail.com"
+                    className="block p-3 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-amber-400/30 transition-all group"
+                  >
+                    <p className="text-[10px] font-mono text-zinc-500 uppercase">Personal & Alternate</p>
+                    <p className="text-xs font-mono text-zinc-300 group-hover:text-amber-400 group-hover:underline">
+                      michaelcartelo03@gmail.com
+                    </p>
+                  </a>
                 </div>
+              </div>
 
-                <div className="liquid-glass rounded-[3rem] p-8 md:p-16 border-white/10 relative overflow-hidden min-h-[500px] flex items-center justify-center">
-                    <AnimatePresence mode="wait">
-                        {step === 1 && (
-                            <motion.div 
-                                key="step1"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                className="text-center"
-                            >
-                                <div className="w-24 h-24 rounded-full bg-electric-400/10 flex items-center justify-center mx-auto mb-8 border border-electric-400/20 group hover:border-electric-400 transition-colors">
-                                    <Shield className="w-10 h-10 text-electric-400" />
-                                </div>
-                                <h3 className="text-2xl font-black mb-4 uppercase tracking-wider">Initialize Project Node</h3>
-                                <p className="text-muted-foreground mb-12 max-w-sm mx-auto text-sm leading-relaxed">
-                                    Our systems require a biometric-style verification of your project intent before establishing a secure channel.
-                                </p>
-                                <button 
-                                    onClick={startScan}
-                                    className="px-8 py-4 rounded-full bg-electric-400 text-dark-950 font-black uppercase text-xs tracking-[0.2em] flex items-center gap-3 mx-auto hover:scale-105 active:scale-95 transition-all"
-                                >
-                                    Start System Scan <Scan className="w-4 h-4" />
-                                </button>
-                            </motion.div>
-                        )}
+              <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] space-y-3">
+                <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-400 font-semibold">
+                  Professional Channels
+                </h3>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href="https://www.linkedin.com/in/michael-mokua-251390302/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] text-xs font-medium text-zinc-300 hover:text-amber-400 hover:border-amber-400/30 transition-all"
+                  >
+                    <span>LinkedIn Profile</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60" />
+                  </a>
 
-                        {step === 2 && (
-                            <motion.div 
-                                key="step2"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="w-full max-w-md text-center"
-                            >
-                                <div className="relative w-full aspect-square md:aspect-video rounded-3xl bg-black/40 border border-white/10 overflow-hidden mb-8">
-                                    {/* Scan Line */}
-                                    <motion.div 
-                                        className="absolute left-0 right-0 h-1 bg-electric-400 shadow-[0_0_20px_var(--color-electric-400)] z-20"
-                                        animate={{ top: ["0%", "100%", "0%"] }}
-                                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                                    />
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                        <div className="w-20 h-20 border-2 border-electric-400/20 rounded-full flex items-center justify-center">
-                                            <div className="w-16 h-16 border-4 border-electric-400 rounded-full border-t-transparent animate-spin" />
-                                        </div>
-                                        <p className="mt-6 text-[10px] font-mono text-electric-400 uppercase tracking-[0.3em] font-bold">
-                                            Analyzing_Visitor_Pattern... {progress}%
-                                        </p>
-                                    </div>
-                                    <div className="absolute inset-x-8 bottom-8 h-1 bg-white/5 rounded-full overflow-hidden">
-                                        <motion.div 
-                                            className="h-full bg-electric-400"
-                                            animate={{ width: `${progress}%` }}
-                                        />
-                                    </div>
-                                </div>
-                                <p className="text-xs font-mono text-white/20 uppercase tracking-widest">
-                                    Awaiting_Verification...
-                                </p>
-                            </motion.div>
-                        )}
+                  <a
+                    href="https://github.com/Michael-Mokua"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] text-xs font-medium text-zinc-300 hover:text-amber-400 hover:border-amber-400/30 transition-all"
+                  >
+                    <span>GitHub (@Michael-Mokua)</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
 
-                        {step === 3 && (
-                            <motion.div 
-                                key="step3"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="w-full max-w-xl"
-                            >
-                                <div className="flex items-center gap-4 mb-8">
-                                    <CheckCircle className="w-8 h-8 text-green-400" />
-                                    <div>
-                                        <h3 className="text-xl font-bold uppercase tracking-wider">Pattern Verified</h3>
-                                        <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Handshake_Permitted</p>
-                                    </div>
-                                </div>
-                                
-                                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setStep(4); }}>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <input type="text" placeholder="IDENTITY_DESC" className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs uppercase font-mono focus:border-electric-400 outline-none" required />
-                                        <input type="email" placeholder="SIGNAL_CHANNEL (EMAIL)" className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs uppercase font-mono focus:border-electric-400 outline-none" required />
-                                    </div>
-                                    <textarea placeholder="PROJECT_SPECIFICATIONS" rows={4} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs uppercase font-mono focus:border-electric-400 outline-none resize-none" required />
-                                    <button className="w-full py-4 rounded-xl bg-electric-400 text-dark-950 font-black uppercase text-xs tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-white hover:text-dark-950 transition-all">
-                                        Execute Handshake <Send className="w-4 h-4" />
-                                    </button>
-                                </form>
-                            </motion.div>
-                        )}
-
-                        {step === 4 && (
-                            <motion.div 
-                                key="step4"
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="text-center"
-                            >
-                                <div className="relative w-32 h-32 mx-auto mb-8">
-                                    <div className="absolute inset-0 bg-green-400/20 blur-2xl rounded-full" />
-                                    <div className="relative w-full h-full rounded-full bg-green-400/10 border border-green-400/30 flex items-center justify-center">
-                                        <CheckCircle className="w-12 h-12 text-green-400" />
-                                    </div>
-                                </div>
-                                <h3 className="text-2xl font-black mb-4 uppercase tracking-wider">Handshake Successful</h3>
-                                <p className="text-muted-foreground text-sm max-w-xs mx-auto mb-10 leading-relaxed font-mono italic">
-                                    "Project packet encrypted and queued for manual system architect review. Expect signal return within 12 cycles."
-                                </p>
-                                <div className="flex items-center justify-center gap-4">
-                                    <div className="px-4 py-2 bg-white/5 rounded-md border border-white/10 flex items-center gap-2">
-                                        <Lock className="w-3 h-3 text-white/40" />
-                                        <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">AES_256_ACTIVE</span>
-                                    </div>
-                                    <div className="px-4 py-2 bg-green-400/10 rounded-md border border-green-400/20 flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                                        <span className="text-[10px] font-mono text-green-400 uppercase tracking-widest">SIGNAL_SENT</span>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
-                    {/* Corner accents */}
-                    <div className="absolute top-0 left-0 p-4">
-                        <ArrowRight className="w-4 h-4 text-white/5 rotate-45" />
+            {/* Instant Form Side */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="md:col-span-7 p-7 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.08]"
+            >
+              {sent ? (
+                <div className="py-12 text-center space-y-4 flex flex-col items-center">
+                  <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                    <CheckCircle2 className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground">Message Delivered</h3>
+                  <p className="text-xs sm:text-sm text-zinc-400 max-w-sm">
+                    Thank you for reaching out. I received your details and will get back to you within 24 hours.
+                  </p>
+                  <button
+                    onClick={() => setSent(false)}
+                    className="mt-4 px-5 py-2 rounded-full border border-white/10 text-xs font-mono text-zinc-300 hover:text-amber-400 hover:border-amber-400/40 transition-all"
+                  >
+                    Send another message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
+                        Your Name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Alex Kimani"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full bg-dark-950/80 border border-white/10 rounded-xl px-4 py-3 text-xs sm:text-sm text-foreground focus:border-amber-400/50 focus:outline-none transition-colors"
+                      />
                     </div>
-                </div>
-            </div>
-        </section>
-    );
+
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="alex@company.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full bg-dark-950/80 border border-white/10 rounded-xl px-4 py-3 text-xs sm:text-sm text-foreground focus:border-amber-400/50 focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
+                      Subject / Project Type
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Agricultural Marketplace / AI Reasoning Consultation"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full bg-dark-950/80 border border-white/10 rounded-xl px-4 py-3 text-xs sm:text-sm text-foreground focus:border-amber-400/50 focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
+                      Message & Requirements
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      placeholder="Tell me about what you are looking to build, timeline, and tech stack..."
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full bg-dark-950/80 border border-white/10 rounded-xl px-4 py-3 text-xs sm:text-sm text-foreground focus:border-amber-400/50 focus:outline-none transition-colors resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-ochre-600 text-dark-950 font-bold text-xs uppercase tracking-wider hover:opacity-95 transition-all shadow-warm flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Transmitting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

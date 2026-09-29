@@ -1,25 +1,28 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from "next";
+import { getAllProjects } from "@/lib/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://mikesth3tic.dev';
-    const lastModified = new Date();
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mikesth3tic-dev.vercel.app";
+  const lastModified = new Date();
 
-    const routes = [
-        '',
-        '/about',
-        '/projects',
-        '/blog',
-        '/now',
-        '/resume',
-        '/contact',
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
-        lastModified,
-        changeFrequency: 'monthly' as const,
-        priority: route === '' ? 1 : 0.8,
-    }));
+  const staticRoutes: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${baseUrl}/projects`, lastModified, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/about`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/services`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/now`, lastModified, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/resume`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/contact`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/start-project`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+  ];
 
-    // In production, you would fetch all blog slugs and add them here
+  const projects = getAllProjects();
+  const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
+    url: `${baseUrl}/projects/${project.slug}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
-    return [...routes];
+  return [...staticRoutes, ...projectRoutes];
 }

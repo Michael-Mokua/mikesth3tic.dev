@@ -1,152 +1,131 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, Variants } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Download, MapPin } from "lucide-react";
 import Link from "next/link";
-import { useGreeting } from "@/hooks/useGreeting";
-import { useSound } from "@/hooks/useSound";
-import { useTranslation } from "@/components/providers/LanguageProvider";
-import { NeuralField } from "./NeuralField";
-
-const ROLES = [
-    "Software Product Studio",
-    "AI Systems Engineering",
-    "Scalable Digital Solutions",
-    "Product Engineering Studio",
-];
+import { ExploreModeTrigger } from "@/components/explore/ExploreModeTrigger";
+import { getFeaturedProjects } from "@/lib/projects";
 
 export function HeroSection() {
-    const { t } = useTranslation();
-    const [roleIndex, setRoleIndex] = useState(0);
-    const [displayed, setDisplayed] = useState("");
-    const [typing, setTyping] = useState(true);
-    const { playHover, playClick, playAmbient } = useSound();
+  const featuredProjects = getFeaturedProjects();
 
-    useEffect(() => {
-        const stopAmbient = playAmbient();
-        return () => {
-            if (stopAmbient) stopAmbient();
-        };
-    }, [playAmbient]);
+  return (
+    <section
+      className="relative min-h-[92vh] w-full flex items-center justify-center pt-28 pb-16 overflow-hidden"
+      aria-label="Hero section"
+    >
+      {/* Background Decorative Glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-500/10 via-ochre-500/5 to-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-    useEffect(() => {
-        const role = ROLES[roleIndex];
-        let timeout: NodeJS.Timeout;
+      <div className="container-custom relative z-10 w-full">
+        <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
+          {/* Status & Origin Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="mb-6 flex flex-wrap items-center justify-center gap-2.5"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              Nairobi, Kenya 🇰🇪 · Founder @ MIKESTH3TIC.DEV
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/[0.03] border border-white/[0.08] text-zinc-400">
+              <MapPin className="w-3 h-3 text-amber-400" />
+              Kabarak University (Class of '26)
+            </span>
+          </motion.div>
 
-        if (typing) {
-            if (displayed.length < role.length) {
-                timeout = setTimeout(() => setDisplayed(role.slice(0, displayed.length + 1)), 70);
-            } else {
-                timeout = setTimeout(() => setTyping(false), 2000);
-            }
-        } else {
-            if (displayed.length > 0) {
-                timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40);
-            } else {
-                setRoleIndex((i) => (i + 1) % ROLES.length);
-                setTyping(true);
-            }
-        }
+          {/* Main Headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-6 space-y-2"
+          >
+            <p className="text-xs sm:text-sm font-mono text-zinc-400 uppercase tracking-[0.3em]">
+              Full-Stack Developer & AI Systems Builder
+            </p>
+            <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-[1.02]">
+              Michael <span className="text-gradient">Ogutu Mokua.</span>
+            </h1>
+          </motion.div>
 
-        return () => clearTimeout(timeout);
-    }, [displayed, typing, roleIndex]);
+          {/* Tagline & Story Paragraph */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mb-8 space-y-4 max-w-2xl"
+          >
+            <p className="text-lg sm:text-xl font-mono text-amber-400 font-semibold tracking-wide">
+              &ldquo;Disrupt. Automate. Dominate.&rdquo;
+            </p>
+            <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
+              Rooted in a farming background off Old Kangundo Road and sharpened by government ICT infrastructure experience, I build production-grade web applications, agritech platforms, and specialized LLM reasoning pipelines.
+            </p>
+          </motion.div>
 
-    const containerVariants: Variants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
-    };
+          {/* 3D Interactive Explore Trigger (Special Feature) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="mb-8"
+          >
+            <ExploreModeTrigger projects={featuredProjects} variant="hero" />
+          </motion.div>
 
-    const itemVariants: Variants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-    };
-
-    return (
-        <section
-            className="relative h-screen w-full flex items-center justify-center overflow-hidden"
-            aria-label="Hero section"
-        >
-            {/* Immersive Neural Field Background */}
-            <div className="absolute inset-0 z-0">
-                <NeuralField />
-            </div>
-
-            {/* Content Overlay */}
-            <div className="relative z-10 container-custom w-full max-w-7xl px-6">
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="flex flex-col items-start text-left"
-                >
-                    {/* System Status Badge */}
-                    <motion.div variants={itemVariants} className="mb-6">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-mono font-bold bg-white/[0.03] border border-white/[0.08] text-electric-400 uppercase tracking-[0.3em] backdrop-blur-md">
-                            <span className="w-1.5 h-1.5 rounded-full bg-electric-400 animate-pulse" />
-                            {t("hero.badge")}
-                        </span>
-                    </motion.div>
-
-                    {/* Kinetic Headline */}
-                    <motion.div variants={itemVariants} className="mb-4">
-                        <span className="text-xs font-mono text-white/40 uppercase tracking-[0.5em] block mb-2">
-                           Michael Ogutu Mokua // Software Studio
-                        </span>
-                        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none tracking-tighter">
-                            <span className="block text-white opacity-90">Michael</span>
-                            <span className="block text-gradient">Mokua.</span>
-                        </h1>
-                    </motion.div>
-
-                    {/* Interactive Role Switcher */}
-                    <motion.div variants={itemVariants} className="mb-10 flex items-center gap-4 text-xl sm:text-2xl md:text-3xl font-mono text-white/60">
-                         <div className="w-12 h-px bg-electric-400/50" />
-                         <span>{displayed}</span>
-                         <span className="animate-blink w-1 h-8 bg-electric-400" />
-                    </motion.div>
-
-                    {/* Elite CTA Actions */}
-                    <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6">
-                        <Link
-                            href="/start-project"
-                            onMouseEnter={playHover}
-                            onClick={playClick}
-                            className="group relative px-8 py-4 rounded-full bg-electric-400 text-dark-950 font-black text-xs uppercase tracking-widest transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(0,212,255,0.4)]"
-                        >
-                            {t("hero.cta.start")}
-                            <ArrowRight className="inline-block ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-
-                        <Link
-                            href="/resume"
-                            onMouseEnter={playHover}
-                            onClick={playClick}
-                            className="flex items-center gap-3 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-white/80 font-bold text-xs uppercase tracking-widest transition-all hover:bg-white/10 hover:border-white/20"
-                        >
-                            <Download className="w-4 h-4 text-electric-400" />
-                            {t("hero.cta.portfolio")}
-                        </Link>
-                    </motion.div>
-                </motion.div>
-            </div>
-
-            {/* Viewport Nav Indicators */}
-            <div className="absolute bottom-10 left-10 hidden xl:flex flex-col gap-2 font-mono text-[10px] text-white/20">
-                <p>LATENCY: 12ms</p>
-                <p>UPTIME: 99.99%</p>
-                <p>SEC: AES_256_GCM</p>
-            </div>
-
-            <motion.div
-                className="absolute bottom-10 right-10 flex flex-col items-center gap-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2.5 }}
+          {/* Direct CTA Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-wrap items-center justify-center gap-4 mb-14"
+          >
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-ochre-600 text-dark-950 font-bold text-xs uppercase tracking-wider hover:opacity-95 transition-all shadow-warm hover:scale-105 active:scale-95"
             >
-                <span className="writing-mode-vertical text-[10px] font-mono tracking-[0.5em] text-white/30 uppercase">DRIV_ENERGY</span>
-                <div className="w-px h-16 bg-gradient-to-b from-electric-400/5 to-electric-400" />
-            </motion.div>
-        </section>
-    );
+              Explore Selected Work
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] text-zinc-200 hover:text-white hover:border-amber-400/40 hover:bg-white/[0.07] font-bold text-xs uppercase tracking-wider transition-all"
+            >
+              Start a Project
+            </Link>
+
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full border border-white/10 bg-transparent text-zinc-400 hover:text-amber-400 text-xs font-mono transition-all"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Resume (PDF)
+            </Link>
+          </motion.div>
+
+          {/* Quick Real Stack Pills */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap items-center justify-center gap-2 pt-4 border-t border-white/[0.06] text-[11px] font-mono text-zinc-400"
+          >
+            <span className="text-zinc-500 uppercase tracking-wider mr-2">Core Arsenal:</span>
+            {["Next.js / React", "TypeScript", "Python", "Claude API / LangChain", "PostgreSQL / Supabase", "Kotlin (Android)", "M-Pesa Daraja"].map((tech) => (
+              <span
+                key={tech}
+                className="px-2.5 py-1 rounded-md bg-white/[0.02] border border-white/[0.06] text-zinc-300"
+              >
+                {tech}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
 }

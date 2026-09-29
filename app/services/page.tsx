@@ -1,302 +1,191 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ServiceCard, type ServiceOffering } from "@/components/services/ServiceCard";
-import { BackgroundGradient } from "@/components/ui/BackgroundGradient";
 import Link from "next/link";
-import { ArrowRight, Terminal } from "lucide-react";
+import { ArrowRight, Code2, Bot, Smartphone, Network, CheckCircle2, ShieldCheck } from "lucide-react";
 
-// The massive array of 12 Founder & Architect Services
-const services: ServiceOffering[] = [
-    {
-        id: "custom-software",
-        title: "1. Custom Software Development",
-        icon: "Code2",
-        description: "Full-stack Web Applications, Custom Business Systems, SaaS Platforms, Admin Dashboards, API Development & Integration, and Secure Backend Architecture (Node.js, MongoDB, REST APIs).",
-        bullets: [
-            "Full-stack Web Applications",
-            "Custom Business Systems",
-            "SaaS Platforms",
-            "Admin Dashboards",
-            "API Development & Integration",
-            "Secure Backend Architecture"
-        ],
-        process: [
-            { step: "Requirements Gathering", detail: "Deep dive into your business logic and technical constraints." },
-            { step: "Architecture Design", detail: "Structuring models, API endpoints, and scalable infrastructure." },
-            { step: "Agile Development", detail: "Iterative sprints delivering functional components." },
-            { step: "Deployment & Scale", detail: "Launching with CI/CD pipelines ensuring zero downtime." }
-        ]
-    },
-    {
-        id: "ai-systems",
-        title: "2. AI & Intelligent Systems",
-        icon: "BrainCircuit",
-        description: "AI-powered advisory systems, Chatbots & virtual assistants, Predictive analytics systems, Automation tools, and Smart recommendation engines.",
-        bullets: [
-            "AI-powered Advisory Systems",
-            "Chatbots & Virtual Assistants",
-            "Predictive Analytics Systems",
-            "Automation Tools",
-            "Smart Recommendation Engines",
-            "Business AI Integration"
-        ],
-        process: [
-            { step: "Data Audit", detail: "Evaluating your existing data architecture for AI readiness." },
-            { step: "Model Sourcing", detail: "Selecting optimal LLMs (OpenAI, Groq, local models) for the use case." },
-            { step: "RAG & Fine-Tuning", detail: "Injecting enterprise context into the reasoning engine." },
-            { step: "System Integration", detail: "Exposing insights via custom APIs or intuitive chat interfaces." }
-        ]
-    },
-    {
-        id: "ui-ux",
-        title: "3. UI/UX & Experimental Interfaces",
-        icon: "Zap",
-        description: "Modern Web Design, Experimental UI Concepts, Immersive Landing Pages, Interactive Dashboards, and Product Redesign. We design digital experiences that feel futuristic.",
-        bullets: [
-            "Modern Web Design",
-            "Experimental UI Concepts",
-            "Immersive Landing Pages",
-            "Interactive Dashboards",
-            "Product Redesign & Optimization"
-        ],
-        process: [
-            { step: "Wireframing", detail: "Mapping user journeys and core visual hierarchy." },
-            { step: "High-Fidelity Prototyping", detail: "Crafting glassmorphic, interactive Figma prototypes." },
-            { step: "Motion Design", detail: "Adding physics-based animations (Framer Motion) for spatial awareness." },
-            { step: "Frontend Implementation", detail: "Translating design to pixel-perfect React/Next.js components." }
-        ]
-    },
-    {
-        id: "startup-mvp",
-        title: "4. Startup & MVP Development",
-        icon: "Rocket",
-        description: "Idea to MVP, Rapid Prototyping, Technical Co-Founder Support, Product Architecture Planning, and Scalable System Setup for ambitious founders.",
-        bullets: [
-            "Idea to MVP",
-            "Rapid Prototyping",
-            "Technical Co-Founder Support",
-            "Product Architecture Planning",
-            "Scalable System Setup"
-        ],
-        process: [
-            { step: "Product Validation", detail: "Stripping the idea down to its core value proposition." },
-            { step: "Rapid Tech Stack", detail: "Selecting high-velocity tools (Next.js, Supabase) for fast scaling." },
-            { step: "MVP Build", detail: "Aggressive 4-8 week development sprints for market testing." },
-            { step: "Iterative Feedback", detail: "Instrumenting analytics and pivoting based on first-user data." }
-        ]
-    },
-    {
-        id: "business-systems",
-        title: "5. Business Systems & Automation",
-        icon: "Briefcase",
-        description: "Inventory Systems, Marketplace Platforms, Financial Trackers, Internal Business Dashboards, and Workflow Automation tailored for SMEs.",
-        bullets: [
-            "Inventory Systems",
-            "Marketplace Platforms",
-            "Financial Trackers",
-            "Internal Business Dashboards",
-            "Workflow Automation"
-        ],
-        process: [
-            { step: "Process Mapping", detail: "Identifying operational bottlenecks and manual workflows." },
-            { step: "System Architecture", detail: "Designing relational databases to track money, goods, or users." },
-            { step: "Custom Development", detail: "Building secure, role-based access portals (Admin/User/Vendor)." },
-            { step: "Legacy Migration", detail: "Safely transitioning data from old spreadsheets to the new platform." }
-        ]
-    },
-    {
-        id: "system-architecture",
-        title: "6. System Architecture & Consulting",
-        icon: "Server",
-        description: "Scalable System Architecture Design, Database Optimization, Microservices Planning, Cloud Infrastructure Strategy, and Technical Due Diligence.",
-        bullets: [
-            "Scalable System Design",
-            "Database Optimization",
-            "Microservices Planning",
-            "Cloud Infrastructure Strategy",
-            "Technical Due Diligence"
-        ],
-        process: [
-            { step: "Infrastructure Audit", detail: "Locating single points of failure and performance bottlenecks." },
-            { step: "Topology Redesign", detail: "Mapping monolithic structures to resilient microservices." },
-            { step: "Cloud Strategy", detail: "Optimizing AWS/Vercel usage for cost and global latency." },
-            { step: "Roadmap Delivery", detail: "Providing a technical blueprint for your internal teams to execute." }
-        ]
-    },
-    {
-        id: "cybersecurity",
-        title: "7. Cybersecurity & Data Protection",
-        icon: "Shield",
-        description: "Security Audits, Penetration Testing (Ethical Hacking), Secure API Design, Data Protection Compliance, and System Hardening.",
-        bullets: [
-            "Security Audits",
-            "Penetration Testing",
-            "Secure API Design",
-            "Data Protection Compliance",
-            "System Hardening"
-        ],
-        process: [
-            { step: "Vulnerability Scanning", detail: "Automated probing for known CVEs and misconfigurations." },
-            { step: "Ethical Exploitation", detail: "Manual penetration testing to bypass auth and logic controls." },
-            { step: "Code Review", detail: "Static analysis of the repository hunting for injection vulnerabilities." },
-            { step: "Hardening Report", detail: "Delivering actionable patches to secure the perimeter." }
-        ]
-    },
-    {
-        id: "data-analytics",
-        title: "8. Data & Analytics Engineering",
-        icon: "BarChart3",
-        description: "Business Intelligence Dashboards, Data Pipeline Setup, Custom Reporting Systems, KPI Monitoring Systems, and Performance Analytics.",
-        bullets: [
-            "Business Intelligence Dashboards",
-            "Data Pipeline Setup",
-            "Custom Reporting Systems",
-            "KPI Monitoring Systems",
-            "Performance Analytics"
-        ],
-        process: [
-            { step: "Ingestion Routing", detail: "Connecting disparate raw data sources (APIs, SQL, CSVs)." },
-            { step: "Pipeline Architecture", detail: "Building ETL (Extract, Transform, Load) pipelines for clean data." },
-            { step: "Real-time Visualization", detail: "Designing dynamic dashboards using Recharts/D3.js." },
-            { step: "Automated Reporting", detail: "Scheduling cron jobs for weekly KPI email distributions." }
-        ]
-    },
-    {
-        id: "advanced-mobile",
-        title: "9. Advanced Mobile App Engineering",
-        icon: "Smartphone",
-        description: "Native Android Apps (Kotlin), Cross-Platform Apps, API-Connected Mobile Systems, and High-Performance UI/UX.",
-        bullets: [
-            "Native Android (Kotlin)",
-            "Cross-Platform Interfaces",
-            "API-Connected Systems",
-            "High-Performance UI/UX",
-            "Offline First Architecture"
-        ],
-        process: [
-            { step: "UX Strategy", detail: "Optimizing touch targets and navigation for mobile constraints." },
-            { step: "Native Development", detail: "Writing efficient, bare-metal Kotlin logic or bridging React Native." },
-            { step: "State Synchronization", detail: "Ensuring offline changes sync cleanly when connectivity returns." },
-            { step: "Store Deployment", detail: "Navigating Google Play Store compliance and release tracks." }
-        ]
-    },
-    {
-        id: "experimental-lab",
-        title: "10. Experimental & Emerging Tech Lab",
-        icon: "Activity",
-        description: "Experimental Interfaces, AI + Automation Prototypes, AR/Interactive Web Experiences, and Futuristic Concept Builds.",
-        bullets: [
-            "Experimental Interfaces",
-            "AI + Automation Prototypes",
-            "AR/Interactive Web Experiences",
-            "Futuristic Concept Builds"
-        ],
-        process: [
-            { step: "Ideation Workshop", detail: "Brainstorming boundary-pushing concepts with no technical constraints." },
-            { step: "Tech Spike", detail: "Rapidly validating emerging technologies (WebGL, WebXR, Local LLMs)." },
-            { step: "Proof of Concept", detail: "Building a functional but unpolished prototype of the vision." },
-            { step: "Refinement", detail: "Polishing the interaction design until it feels like magic." }
-        ]
-    },
-    {
-        id: "tech-retainers",
-        title: "11. Tech Partnership & Retainers",
-        icon: "Database",
-        description: "Ongoing System Maintenance, Monthly Optimization, CTO-as-a-Service, and Startup Technical Advisory.",
-        bullets: [
-            "Ongoing System Maintenance",
-            "Monthly Optimization",
-            "CTO-as-a-Service",
-            "Startup Technical Advisory"
-        ],
-        process: [
-            { step: "Strategic Alignment", detail: "Monthly meetings to align technology goals with business objectives." },
-            { step: "Proactive Monitoring", detail: "24/7 uptime monitoring and automated error reporting." },
-            { step: "Codebase Stewardship", detail: "Continuous dependency updates and technical debt reduction." },
-            { step: "Architectural Foresight", detail: "Planning for the next 6-12 months of scale." }
-        ]
-    },
-    {
-        id: "industry-solns",
-        title: "12. Industry-Specific Solutions",
-        icon: "Stethoscope",
-        description: "Healthcare Advisory Systems, Architecture & Design Firm Systems, Agriculture Marketplaces, Educational Platforms, and FinTech Tracking.",
-        bullets: [
-            "Healthcare Advisory Systems",
-            "Architecture & Design Systems",
-            "Agriculture Marketplaces",
-            "Financial Tracking Platforms",
-            "Educational Tech"
-        ],
-        process: [
-            { step: "Domain Immersion", detail: "Studying the specific regulatory and operational quirks of your industry." },
-            { step: "Compliance Mapping", detail: "Ensuring HIPAA, GDPR, or financial compliance at the architecture level." },
-            { step: "Custom Feature Dev", detail: "Building vertical-specific tools (e.g. crop pricing, patient ledgers)." },
-            { step: "Specialized Launch", detail: "Rolling out the system with industry-specific onboarding." }
-        ]
-    }
+const coreOfferings = [
+  {
+    id: "full-stack",
+    title: "1. Full-Stack Web & SaaS Engineering",
+    description:
+      "End-to-end web applications designed for high performance, modular architecture, and seamless Safaricom M-Pesa payment integration.",
+    stack: ["Next.js 14/15", "TypeScript", "React", "PostgreSQL / Supabase", "M-Pesa Daraja", "Tailwind CSS"],
+    deliverables: [
+      "Custom SaaS platforms & marketplaces",
+      "Safaricom M-Pesa Daraja STK Push & C2B checkout flows",
+      "Role-based authentication and secure REST/Server Action endpoints",
+      "Accessible, responsive interfaces optimized for Lighthouse performance",
+    ],
+    process: [
+      "Requirements gathering & data model specification",
+      "Database schema & API routing design",
+      "Iterative sprint development with strict typing",
+      "Deployment on Vercel/cloud with monitoring",
+    ],
+  },
+  {
+    id: "ai-systems",
+    title: "2. AI Systems & LLM Orchestration",
+    description:
+      "Autonomous reasoning pipelines, specialized prompt workflows, and African-market NLP models built with deterministic safeguards against hallucination.",
+    stack: ["Claude 3.5 Sonnet", "LangChain", "Python", "FastAPI", "Vector Embeddings", "Sheng Dataset"],
+    deliverables: [
+      "Neuro-symbolic hybrid reasoning systems (AURA architecture)",
+      "Financial report & PDF structured ratio extraction (ORACLE NSE)",
+      "Curated Sheng/Swahili prompt injection & localized copywriting (CHAPUO)",
+      "Strict Zod/Pydantic schema validation for predictable JSON outputs",
+    ],
+    process: [
+      "Domain context analysis & prompt architecture design",
+      "Vector retrieval (RAG) & deterministic rule gating",
+      "Inference testing & latency optimization",
+      "Secure backend integration & rate-limiting",
+    ],
+  },
+  {
+    id: "mobile-telemetry",
+    title: "3. Mobile & Offline-First Engineering",
+    description:
+      "Native Android applications and offline-ready web platforms engineered to perform reliably in low-bandwidth and remote environments.",
+    stack: ["Kotlin", "Jetpack Compose", "Room Database", "OpenStreetMap (OSMDroid)", "IndexedDB"],
+    deliverables: [
+      "Native Android background GPS location services (StrideOS)",
+      "Offline vector map rendering and tile caching",
+      "Low-bandwidth data synchronization and USSD workflow mockups",
+      "Clean Architecture patterns (MVVM, Repositories, UseCases)",
+    ],
+    process: [
+      "Mobile UX & offline state mapping",
+      "Native Kotlin / Compose component development",
+      "Background worker & battery consumption optimization",
+      "Local database migration & test builds",
+    ],
+  },
+  {
+    id: "ict-infra",
+    title: "4. ICT Infrastructure & Digitalization",
+    description:
+      "Hardware-level network design, structured cabling, VoIP configuration, and legacy digitalization audits backed by Kenyan government attachment experience.",
+    stack: ["Structured Cabling", "Network Switch Routing", "VoIP Telephony", "Server Rooms", "Digital Audits"],
+    deliverables: [
+      "Structured data cabling & server rack organization",
+      "VoIP PBX telephony configuration & testing",
+      "Legacy departmental workflow audit & modernization blueprint",
+      "Network subnetting, routing, and access control scoping",
+    ],
+    process: [
+      "On-site infrastructure inspection & cable mapping",
+      "Network switch topology & IP subnet planning",
+      "VoIP extension & server room deployment",
+      "Documentation handover & staff onboarding",
+    ],
+  },
 ];
 
-export default function ServicesPage() {
-    return (
-        <div className="pt-32 pb-20 overflow-hidden">
-            <BackgroundGradient />
+export function ServicesPage() {
+  return (
+    <div className="pt-32 pb-24">
+      <div className="container-custom">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mb-16 space-y-3"
+        >
+          <p className="text-xs font-mono text-amber-400 tracking-[0.3em] uppercase">
+            // Engineering Offerings
+          </p>
+          <h1 className="text-4xl sm:text-6xl font-black text-foreground tracking-tight">
+            Software & Systems <span className="text-gradient">Capabilities.</span>
+          </h1>
+          <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">
+            I work with founders, businesses, and organizations as a full-stack engineer and technical architect. Every deliverable is built on maintainable code and realistic engineering principles.
+          </p>
+        </motion.div>
 
-            <div className="container-custom relative z-10">
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+          {coreOfferings.map((srv, idx) => (
+            <motion.div
+              key={srv.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.07] hover:border-amber-400/30 transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <h2 className="text-2xl font-bold text-foreground mb-3 group-hover:text-amber-400 transition-colors">
+                  {srv.title}
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed mb-6">
+                  {srv.description}
+                </p>
 
-                {/* Immersive Header */}
-                <motion.div
-                    className="max-w-3xl mb-16 md:mb-24"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-electric-400/10 border border-electric-400/20 text-electric-400 text-xs font-mono mb-6">
-                        <Terminal className="w-3.5 h-3.5" />
-                        <span>// ARCHITECTURE & ENGINEERING</span>
+                {/* Deliverables */}
+                <div className="space-y-2 mb-6">
+                  <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">
+                    Core Deliverables:
+                  </p>
+                  {srv.deliverables.map((d, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs text-zinc-400">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                      <span>{d}</span>
                     </div>
-
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6 leading-tight">
-                        We design digital experiences that feel <span className="text-gradient">futuristic.</span>
-                    </h1>
-
-                    <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light mt-4">
-                        From rapid MVP prototyping to enterprise-grade AI architecture. I partner with ambitious founders and businesses to build intelligent, scalable, and relentlessly optimized systems.
-                    </p>
-                </motion.div>
-
-                {/* The Grid of 12 Services */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-24">
-                    {services.map((service, idx) => (
-                        <ServiceCard key={service.id} service={service} index={idx} />
-                    ))}
+                  ))}
                 </div>
 
-                {/* High-Impact CTA */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="relative rounded-3xl overflow-hidden glass border border-electric-400/30 p-8 md:p-16 text-center"
-                >
-                    <div className="absolute inset-0 bg-gradient-to-br from-electric-900/40 via-background to-background -z-10" />
+                {/* Process Steps */}
+                <div className="space-y-1.5 mb-6 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+                  <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest font-semibold mb-2">
+                    Execution Steps:
+                  </p>
+                  {srv.process.map((step, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-zinc-400 font-mono">
+                      <span className="text-amber-400 font-bold text-[10px]">0{i + 1}.</span>
+                      <span>{step}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to scale your idea?</h2>
-                    <p className="text-muted-foreground max-w-2xl mx-auto mb-10 text-lg">
-                        Stop managing freelancers. Partner with a technology architect to build your system right the first time.
-                    </p>
-
-                    <Link
-                        href="/start-project"
-                        className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-electric-400 text-dark-950 font-bold text-lg hover:bg-electric-300 transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_var(--electric-400)]"
-                    >
-                        Start a Project
-                        <ArrowRight className="w-5 h-5" />
-                    </Link>
-                </motion.div>
-
-            </div>
+              {/* Stack Pills */}
+              <div className="pt-4 border-t border-white/[0.06] flex flex-wrap gap-1.5 mt-2">
+                {srv.stack.map((t) => (
+                  <span
+                    key={t}
+                    className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.03] text-zinc-400"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
-    );
+
+        {/* CTA Banner */}
+        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-amber-500/15 via-ochre-500/10 to-transparent border border-amber-500/25 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 text-center sm:text-left">
+            <h3 className="text-2xl font-bold text-foreground">Ready to discuss your project?</h3>
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Send over your specifications or schedule an introductory call.
+            </p>
+          </div>
+
+          <Link
+            href="/start-project"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-ochre-600 text-dark-950 font-bold text-xs uppercase tracking-wider hover:opacity-95 transition-all shadow-warm shrink-0"
+          >
+            <span>Start a Project</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
+
+export default ServicesPage;

@@ -1,138 +1,139 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, HelpCircle, Shield, Zap, Terminal } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Minus, HelpCircle, Mail, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const faqs = [
-    {
-        id: "01",
-        question: "What is the 'MIKESTH3TIC' architectural philosophy?",
-        answer: "We believe software is a living organism. Our philosophy, 'Software-First Technology', prioritizes architectural integrity, sub-10ms performance, and an immersive aesthetic that communicates technical dominance.",
-        protocol: "PROTOCOL_CORE"
-    },
-    {
-        id: "02",
-        question: "How do you handle project scalability for startups?",
-        answer: "Every node we deploy is architected for 'Hyper-Scale'. We utilize distributed edge runtimes, multi-tenant database patterns, and elastic compute orchestration to ensure your system grows without friction.",
-        protocol: "PROTOCOL_SCALE"
-    },
-    {
-        id: "03",
-        question: "Can I integrate AI beyond simple chat interfaces?",
-        answer: "Absolutely. We specialize in 'Agentic Integration'—embedding autonomous neural nodes directly into your business logic to automate decision-making, content synthesis, and user personalization.",
-        protocol: "PROTOCOL_NEURAL"
-    },
-    {
-        id: "04",
-        question: "What is the typical 'Handshake' duration?",
-        answer: "From initialization (kickoff) to V1 deployment, we aim for a 4-8 week cycle depending on complexity. Our sprint protocols are optimized for high-velocity software studios.",
-        protocol: "PROTOCOL_TIME"
-    }
+  {
+    id: "01",
+    question: "What is MIKESTH3TIC.DEV and who is behind it?",
+    answer:
+      "MIKESTH3TIC.DEV is my independent software studio based in Nairobi, Kenya. Founded by Michael Ogutu Mokua, I build full-stack web applications, localized AI reasoning workflows, and African-market digital products with Next.js, Python, and Claude API.",
+  },
+  {
+    id: "02",
+    question: "How do you ensure reliability in your AI and LLM integrations?",
+    answer:
+      "I engineer hybrid systems that pair neural LLMs with strict deterministic validation gates. Instead of raw text prompting, I use structured schema enforcement (Zod/Pydantic), anti-hallucination checks, and vector retrieval pipelines so every output is defensible and accurate.",
+  },
+  {
+    id: "03",
+    question: "Do you build M-Pesa (Daraja) and African payment integrations?",
+    answer:
+      "Yes. I have implemented Safaricom Daraja STK Push, C2B payment verification, and webhook reconciliation in production platforms like Agri Value Connect, ensuring instant, automated settlements for users.",
+  },
+  {
+    id: "04",
+    question: "What was your government ICT attachment experience?",
+    answer:
+      "I completed a 3-month ICT attachment at the State Department for Youth Affairs and Creative Economy (SDYACE). I worked directly on structured cabling, VoIP configuration, network switch routing, server room maintenance, and digitalization audits across KECOBO, DITD, and NYC.",
+  },
+  {
+    id: "05",
+    question: "What is your availability for freelance, contract, or engineering roles?",
+    answer:
+      "I am open to contract product builds, technical consultations, and engineering discussions. Send a project brief or email me directly at mikestheticdev@gmail.com, and I typically respond within 24 hours.",
+  },
 ];
 
 export function StudioFAQ() {
-    const [openId, setOpenId] = useState<string | null>("01");
+  const [openId, setOpenId] = useState<string | null>("01");
 
-    return (
-        <section className="section-padding bg-dark-950/50 relative overflow-hidden">
-            <div className="container-custom relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="mb-16"
-                >
-                    <div className="flex items-center gap-3 mb-4">
-                        <HelpCircle className="w-5 h-5 text-electric-400" />
-                        <span className="text-[10px] font-mono text-electric-400 uppercase tracking-[0.5em] font-bold">
-                            // SYSTEM_PROTOCOLS
-                        </span>
-                    </div>
-                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">
-                        Frequent <span className="text-gradient">Handshakes</span>
-                    </h2>
-                </motion.div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <div className="space-y-4">
-                        {faqs.map((faq) => (
-                            <motion.div
-                                key={faq.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                className={`rounded-[1.5rem] border transition-all duration-500 overflow-hidden ${
-                                    openId === faq.id 
-                                    ? "liquid-glass border-electric-400/30" 
-                                    : "bg-white/[0.02] border-white/5 hover:border-white/10"
-                                }`}
-                            >
-                                <button
-                                    onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                                    className="w-full p-6 flex items-center justify-between text-left"
-                                >
-                                    <div className="flex items-center gap-6">
-                                        <span className="text-xs font-mono text-white/20">{faq.id}</span>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-white/80">
-                                            {faq.question}
-                                        </h3>
-                                    </div>
-                                    <div className={`p-2 rounded-lg transition-colors ${openId === faq.id ? "bg-electric-400 text-dark-950" : "bg-white/5 text-white/40"}`}>
-                                        {openId === faq.id ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                                    </div>
-                                </button>
-
-                                <AnimatePresence>
-                                    {openId === faq.id && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            className="px-6 pb-6"
-                                        >
-                                            <div className="pl-12">
-                                                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                                                    {faq.answer}
-                                                </p>
-                                                <div className="flex items-center gap-2 px-2 py-1 rounded bg-electric-400/5 border border-electric-400/10 w-fit">
-                                                    <Terminal className="w-3 h-3 text-electric-400" />
-                                                    <span className="text-[8px] font-mono text-electric-400">
-                                                        {faq.protocol}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    <div className="hidden lg:block">
-                        <div className="sticky top-24 p-8 rounded-[2.5rem] liquid-glass border-white/10 text-center">
-                            <Shield className="w-16 h-16 text-electric-400 mx-auto mb-6 opacity-20" />
-                            <h3 className="text-xl font-black mb-4 uppercase tracking-wider">Still have questions?</h3>
-                            <p className="text-sm text-muted-foreground mb-8">
-                                Initialize a direct secure handshake with our core system architect for custom protocol analysis.
-                            </p>
-                            <div className="p-1 rounded-full bg-electric-400/10 border border-electric-400/20 mb-8 max-w-xs mx-auto">
-                                <div className="flex items-center justify-between px-4 py-2">
-                                    <span className="text-[10px] font-mono text-electric-400">ENCRYPTION: AES_256</span>
-                                    <Zap className="w-3 h-3 text-electric-400" />
-                                </div>
-                            </div>
-                            <button className="w-full py-4 rounded-2xl bg-electric-400 text-dark-950 font-black uppercase tracking-widest text-xs hover:scale-[1.02] active:scale-[0.98] transition-all">
-                                Initialize Direct Contact
-                            </button>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <section className="section-padding relative" aria-label="Frequently Asked Questions">
+      <div className="container-custom">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Column: Heading & Contact Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-5 space-y-6 lg:sticky lg:top-28"
+          >
+            <div className="space-y-3">
+              <p className="text-xs font-mono text-amber-400 tracking-[0.3em] uppercase">
+                // Clarifications & FAQs
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-black text-foreground">
+                Frequently Asked <span className="text-gradient">Questions.</span>
+              </h2>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                Everything you need to know about my engineering capabilities, project timelines, and technical background.
+              </p>
             </div>
 
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-electric-400/5 blur-[120px] rounded-full -z-10" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-neon-400/5 blur-[100px] rounded-full -z-10" />
-        </section>
-    );
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
+              <h3 className="text-base font-bold text-foreground">Have a specific question or project idea?</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Reach out directly and let&apos;s discuss how we can build your product.
+              </p>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-ochre-600 text-dark-950 font-bold text-xs uppercase tracking-wider hover:opacity-95 transition-all shadow-warm"
+              >
+                <span>Get in Touch</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Right Column: FAQ Accordion */}
+          <div className="lg:col-span-7 space-y-3">
+            {faqs.map((faq) => {
+              const isOpen = openId === faq.id;
+              return (
+                <motion.div
+                  key={faq.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                    isOpen
+                      ? "bg-white/[0.03] border-amber-400/30 shadow-sm"
+                      : "bg-white/[0.01] border-white/[0.06] hover:border-white/15"
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpenId(isOpen ? null : faq.id)}
+                    className="w-full p-5 sm:p-6 flex items-center justify-between text-left gap-4"
+                    aria-expanded={isOpen}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="text-xs font-mono text-amber-400/80 font-bold shrink-0">{faq.id}</span>
+                      <h3 className="text-sm sm:text-base font-bold text-foreground">{faq.question}</h3>
+                    </div>
+                    <div
+                      className={`p-1.5 rounded-lg transition-colors shrink-0 ${
+                        isOpen ? "bg-amber-400 text-dark-950" : "bg-white/5 text-zinc-400"
+                      }`}
+                    >
+                      {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="px-5 sm:px-6 pb-6"
+                      >
+                        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed pl-7 sm:pl-8 border-l border-amber-400/20">
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

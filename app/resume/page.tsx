@@ -1,315 +1,273 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-    Mail,
-    Phone,
-    Globe,
-    Github,
-    ExternalLink,
-    Target,
-    Zap,
-    Crown,
-    Star,
-    ArrowLeft,
-    Download
-} from "lucide-react";
+import { Download, Printer, ArrowLeft, Mail, MapPin, Globe, Linkedin, Github, ExternalLink, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const HeroBackground = dynamic(
-    () => import("@/components/home/HeroBackground").then((m) => ({ default: m.HeroBackground })),
-    { ssr: false }
-);
-
-const Magnetic = dynamic(() => import("@/components/ui/Magnetic").then(mod => mod.Magnetic), { ssr: false });
-
-import { Variants } from "framer-motion";
-
-const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.3 }
-    }
-};
-
-const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
 
 export default function ResumePage() {
-    return (
-        <div className="relative min-h-screen bg-background selection:bg-electric-400 selection:text-dark-950">
-            {/* Background */}
-            <HeroBackground />
+  const handlePrint = () => {
+    window.print();
+  };
 
-            {/* Header / Nav */}
-            <div className="fixed top-0 inset-x-0 z-50 p-6 flex justify-between items-center pointer-events-none">
-                <Magnetic>
-                    <Link
-                        href="/"
-                        className="pointer-events-auto p-4 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all backdrop-blur-xl shadow-glass"
-                    >
-                        <ArrowLeft className="w-5 h-5" />
-                    </Link>
-                </Magnetic>
-                <Magnetic>
-                    <button
-                        onClick={() => window.print()}
-                        className="pointer-events-auto flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold text-sm shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all hover:scale-105 active:scale-95"
-                    >
-                        <Download className="w-4 h-4" />
-                        Export PDF
-                    </button>
-                </Magnetic>
+  return (
+    <div className="pt-28 pb-24 min-h-screen">
+      <div className="container-custom max-w-4xl">
+        {/* Navigation & Print Controls */}
+        <div className="flex items-center justify-between gap-4 mb-8 print:hidden">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-amber-400 transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Portfolio</span>
+          </Link>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handlePrint}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-ochre-600 text-dark-950 text-xs font-bold uppercase tracking-wider hover:opacity-95 transition-all shadow-warm cursor-pointer"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print / Save as PDF</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Printable Resume Sheet */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="p-8 sm:p-12 rounded-3xl bg-white/[0.02] border border-white/[0.08] shadow-2xl print:bg-white print:text-black print:border-none print:p-0 print:shadow-none space-y-8"
+        >
+          {/* Header */}
+          <header className="border-b border-white/[0.08] print:border-zinc-300 pb-6 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground print:text-black">
+                  Michael Ogutu Mokua
+                </h1>
+                <p className="text-sm font-mono text-amber-400 print:text-amber-700 font-semibold mt-0.5">
+                  Full-Stack Developer & AI Systems Builder · Founder @ MIKESTH3TIC.DEV
+                </p>
+              </div>
+              <div className="text-xs font-mono text-zinc-400 print:text-zinc-600 text-left sm:text-right">
+                <p>Nairobi, Kenya 🇰🇪</p>
+                <p>Kabarak University (Dec 2026)</p>
+              </div>
             </div>
 
-            <main className="relative z-10 pt-32 pb-20 container-custom max-w-5xl">
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    {/* Hero Section */}
-                    <div className="flex flex-col md:flex-row items-center gap-10 mb-20">
-                        <motion.div variants={itemVariants} className="relative group">
-                            <div className="absolute -inset-4 bg-gradient-to-r from-electric-400 to-neon-400 rounded-full blur-[40px] opacity-30 group-hover:opacity-60 transition-opacity" />
-                            <div className="relative w-36 h-36 rounded-full bg-gradient-to-br from-electric-400 to-neon-400 flex items-center justify-center text-5xl font-black text-white shadow-[0_0_50px_rgba(0,0,0,0.5)] border-4 border-white/20">
-                                MO
-                            </div>
-                        </motion.div>
+            {/* Contact Details & Links */}
+            <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-zinc-300 print:text-zinc-700 pt-2">
+              <a href="mailto:mikestheticdev@gmail.com" className="hover:text-amber-400 flex items-center gap-1.5">
+                <Mail className="w-3 h-3 text-amber-400 print:text-zinc-600" />
+                mikestheticdev@gmail.com
+              </a>
+              <span>·</span>
+              <a href="mailto:michaelcartelo03@gmail.com" className="hover:text-amber-400 flex items-center gap-1.5">
+                <Mail className="w-3 h-3 text-zinc-400 print:text-zinc-600" />
+                michaelcartelo03@gmail.com
+              </a>
+              <span>·</span>
+              <a
+                href="https://www.linkedin.com/in/michael-mokua-251390302/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-amber-400 flex items-center gap-1.5"
+              >
+                <Linkedin className="w-3 h-3 text-amber-400 print:text-zinc-600" />
+                LinkedIn
+              </a>
+              <span>·</span>
+              <a
+                href="https://github.com/Michael-Mokua"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-amber-400 flex items-center gap-1.5"
+              >
+                <Github className="w-3 h-3 text-zinc-300 print:text-zinc-600" />
+                GitHub (@Michael-Mokua)
+              </a>
+              <span>·</span>
+              <a
+                href="https://mikesth3tic-dev.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-amber-400 flex items-center gap-1.5"
+              >
+                <Globe className="w-3 h-3 text-amber-400 print:text-zinc-600" />
+                mikesth3tic-dev.vercel.app
+              </a>
+            </div>
+          </header>
 
-                        <div className="text-center md:text-left flex-1">
-                            <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-black tracking-tighter mb-4 text-white drop-shadow-2xl">
-                                Michael <span className="text-gradient">Ogutu Mokua</span>
-                            </motion.h1>
-                            <motion.p variants={itemVariants} className="text-2xl text-electric-400 font-bold tracking-wider uppercase mb-8 flex items-center justify-center md:justify-start gap-3">
-                                <Zap className="w-6 h-6 fill-current" />
-                                Full-Stack Systems Architect
-                            </motion.p>
+          {/* Professional Summary */}
+          <section className="space-y-2">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-amber-400 print:text-amber-800 font-bold">
+              // Professional Summary
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-300 print:text-zinc-800 leading-relaxed">
+              Full-stack developer and intelligent systems architect based in Nairobi, Kenya. Final-year BSc Information Technology student at Kabarak University (graduating December 2026) and founder of MIKESTH3TIC.DEV. Deep expertise across modern web architectures (React, Next.js, TypeScript, PostgreSQL), AI reasoning integration (Claude 3.5 API, LangChain), and Kenyan mobile payments (M-Pesa / Daraja). Hands-on government ICT infrastructure attachment experience in structured cabling, VoIP, and server maintenance.
+            </p>
+          </section>
 
-                            <motion.div variants={itemVariants} className="flex flex-wrap justify-center md:justify-start gap-4">
-                                {[
-                                    { icon: Mail, label: "michaelcartelo03@gmail.com", href: "mailto:michaelcartelo03@gmail.com" },
-                                    { icon: Phone, label: "+254 110 254 359", href: "tel:+254110254359" },
-                                    { icon: Globe, label: "mikesth3tic.dev", href: "https://mikesth3tic.dev" },
-                                    { icon: Github, label: "Michael-Mokua", href: "https://github.com/Michael-Mokua" }
-                                ].map((pill) => (
-                                    <Magnetic key={pill.label}>
-                                        <a
-                                            href={pill.href}
-                                            target={pill.href.startsWith('http') ? "_blank" : undefined}
-                                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-sm font-medium text-white hover:bg-white/20 transition-all backdrop-blur-md"
-                                        >
-                                            <pill.icon className="w-4 h-4 text-electric-400" />
-                                            {pill.label}
-                                        </a>
-                                    </Magnetic>
-                                ))}
-                            </motion.div>
-                        </div>
-                    </div>
+          {/* Experience */}
+          <section className="space-y-4">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-amber-400 print:text-amber-800 font-bold">
+              // Work & Practical Experience
+            </h2>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16">
-                        {/* Main Content */}
-                        <div className="space-y-20">
-                            {/* Professional Summary */}
-                            <section>
-                                <motion.div variants={itemVariants} className="flex items-center gap-6 mb-10">
-                                    <h2 className="text-sm font-mono font-black text-electric-400 tracking-[0.4em] uppercase whitespace-nowrap">Professional Summary</h2>
-                                    <div className="h-px flex-1 bg-gradient-to-r from-electric-400/50 via-electric-400/10 to-transparent" />
-                                </motion.div>
-                                <motion.div variants={itemVariants} className="glass rounded-[2rem] p-10 md:p-12 border border-white/10 bg-white/[0.03] backdrop-blur-2xl shadow-2xl">
-                                    <p className="text-xl text-white/90 leading-relaxed italic font-medium">
-                                        "Motivated and results-driven IT student and full-stack developer specializing in scalable web and mobile solutions. Experienced in designing and deploying applications using modern JavaScript (React, Next.js), Node.js, and Android/Kotlin. Passionate about building immersive, high-performance software that dominates the digital landscape."
-                                    </p>
-                                </motion.div>
-                            </section>
+            {/* IFSS Group */}
+            <div className="space-y-1.5 border-l-2 border-amber-400/40 print:border-zinc-400 pl-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono">
+                <h3 className="text-sm font-bold text-foreground print:text-black">
+                  IT Project Manager — IFSS Group
+                </h3>
+                <span className="text-amber-400 print:text-zinc-600">September 2026 – Present · Nairobi</span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-300 print:text-zinc-700">
+                IT project and systems work.
+              </p>
+            </div>
 
-                            {/* Projects */}
-                            <section>
-                                <motion.div variants={itemVariants} className="flex items-center gap-6 mb-10">
-                                    <h2 className="text-sm font-mono font-black text-electric-400 tracking-[0.4em] uppercase whitespace-nowrap">Featured Deployments</h2>
-                                    <div className="h-px flex-1 bg-gradient-to-r from-electric-400/50 via-electric-400/10 to-transparent" />
-                                </motion.div>
-                                <div className="space-y-8">
-                                    {[
-                                        {
-                                            title: "EatsAndReps",
-                                            subtitle: "AI-Powered Health Ecosystem",
-                                            desc: "A comprehensive health monitoring system featuring dynamic exercise tracking, nutritional analysis, and intuitive visualization dashboards.",
-                                            tech: ["Next.js 14", "Firebase", "MongoDB", "Framer Motion"],
-                                            link: "https://github.com/Michael-Mokua"
-                                        },
-                                        {
-                                            title: "Agri Value Connect",
-                                            subtitle: "B2B Agricultural Marketplace",
-                                            desc: "A decentralized platform bridging the gap between farmers and vendors, optimizing the supply chain through secure real-time transactions.",
-                                            tech: ["React", "Express.js", "MongoDB", "Stripe API"],
-                                            link: "https://github.com/Michael-Mokua"
-                                        },
-                                        {
-                                            title: "Breast Cancer Advisory System",
-                                            subtitle: "Deep Medical Reasoning",
-                                            desc: "An intelligent diagnostic assistance tool designed to empower users with risk assessments and clinical resource mapping.",
-                                            tech: ["Node.js", "JWT", "REST Architecture", "React"],
-                                            link: "https://github.com/Michael-Mokua"
-                                        }
-                                    ].map((project) => (
-                                        <motion.div
-                                            key={project.title}
-                                            variants={itemVariants}
-                                            className="group relative glass rounded-[2.5rem] p-10 border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-electric-400/40 transition-all duration-700 overflow-hidden"
-                                        >
-                                            <div className="absolute inset-0 bg-gradient-to-br from-electric-400/10 via-transparent to-neon-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                                            <div className="relative z-10">
-                                                <div className="flex justify-between items-start mb-6">
-                                                    <div>
-                                                        <h3 className="text-3xl font-black group-hover:text-electric-400 transition-colors uppercase tracking-tighter text-white">{project.title}</h3>
-                                                        <p className="text-xs font-mono text-electric-400/60 uppercase tracking-[0.2em] mt-1 font-bold">{project.subtitle}</p>
-                                                    </div>
-                                                    <a href={project.link} target="_blank" className="p-4 rounded-2xl bg-white/10 border border-white/10 hover:bg-electric-400 hover:text-black hover:scale-110 transition-all shadow-lg">
-                                                        <ExternalLink className="w-5 h-5" />
-                                                    </a>
-                                                </div>
-                                                <p className="text-lg text-white/70 leading-relaxed mb-10 max-w-2xl font-medium">{project.desc}</p>
-                                                <div className="flex flex-wrap gap-3">
-                                                    {project.tech.map(t => (
-                                                        <span key={t} className="text-[11px] px-4 py-1.5 rounded-full bg-electric-400/10 border border-electric-400/20 text-electric-400 uppercase font-mono font-bold tracking-widest">{t}</span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </section>
+            {/* MIKESTH3TIC.DEV */}
+            <div className="space-y-1.5 border-l-2 border-amber-400/40 print:border-zinc-400 pl-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono">
+                <h3 className="text-sm font-bold text-foreground print:text-black">
+                  Founder & Lead Architect — MIKESTH3TIC.DEV
+                </h3>
+                <span className="text-amber-400 print:text-zinc-600">2024 – Present · Nairobi</span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-300 print:text-zinc-700">
+                Engineered and shipped 10 production-ready software architectures including agricultural marketplaces (Agri Value Connect / MAZAOLOOP), neuro-symbolic reasoning tools (AURA Intelligence), and financial analytics (ORACLE). Curated proprietary Sheng and Swahili NLP datasets for regional AI products.
+              </p>
+            </div>
 
-                            {/* Infrastructure */}
-                            <section>
-                                <motion.div variants={itemVariants} className="flex items-center gap-6 mb-10">
-                                    <h2 className="text-sm font-mono font-black text-electric-400 tracking-[0.4em] uppercase whitespace-nowrap">Hardware & Infra</h2>
-                                    <div className="h-px flex-1 bg-gradient-to-r from-electric-400/50 via-electric-400/10 to-transparent" />
-                                </motion.div>
-                                <motion.div variants={itemVariants} className="glass rounded-[2rem] p-10 border border-white/10 bg-white/[0.03] backdrop-blur-2xl">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        {[
-                                            "Advanced Copper & Fiber Splicing",
-                                            "Structured Cabling (T568A/B)",
-                                            "Scalable Rack Architectures",
-                                            "Hardware Diagnostics & Optimization"
-                                        ].map((tool, i) => (
-                                            <div key={i} className="flex items-center gap-4 group">
-                                                <div className="w-10 h-10 rounded-xl bg-electric-400/10 border border-electric-400/20 flex items-center justify-center group-hover:bg-electric-400 group-hover:text-black transition-all">
-                                                    <Zap className="w-5 h-5" />
-                                                </div>
-                                                <span className="text-lg text-white font-bold tracking-tight">{tool}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            </section>
-                        </div>
+            {/* SDYACE */}
+            <div className="space-y-1.5 border-l-2 border-amber-400/40 print:border-zinc-400 pl-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono">
+                <h3 className="text-sm font-bold text-foreground print:text-black">
+                  ICT Infrastructure & Digitalization Intern — State Dept. for Youth Affairs & Creative Economy (SDYACE)
+                </h3>
+                <span className="text-amber-400 print:text-zinc-600">3-Month Attachment · Nairobi</span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-300 print:text-zinc-700">
+                Executed hands-on network infrastructure, structured cabling, VoIP telephony extension setups, server room operations, and digitalization scoping across KECOBO, DITD, and NYC departments.
+              </p>
+            </div>
+          </section>
 
-                        {/* Sidebar */}
-                        <div className="space-y-16">
-                            {/* Skills Sidebar */}
-                            <section>
-                                <motion.div variants={itemVariants} className="flex flex-col gap-8">
-                                    <div className="flex items-center gap-4">
-                                        <h2 className="text-sm font-mono font-black text-electric-400 tracking-[0.3em] uppercase whitespace-nowrap">Core Stack</h2>
-                                        <div className="h-px flex-1 bg-gradient-to-l from-electric-400/50 via-electric-400/10 to-transparent" />
-                                    </div>
-                                    <div className="space-y-10">
-                                        {[
-                                            { label: "Frontend", skills: ["React 18", "Next.js", "Tailwind", "Three.js"] },
-                                            { label: "Backend", skills: ["Node.js", "Express", "Firebase", "Python"] },
-                                            { label: "Mobile", skills: ["Kotlin", "Android", "Jetpack Compose"] },
-                                            { label: "Tools", skills: ["Git / CLI", "Docker", "REST API", "CI/CD"] }
-                                        ].map((group) => (
-                                            <motion.div key={group.label} variants={itemVariants} className="space-y-4">
-                                                <p className="text-xs font-mono text-white/40 uppercase tracking-[0.3em] font-black">{group.label}</p>
-                                                <div className="flex flex-wrap gap-2.5">
-                                                    {group.skills.map(s => (
-                                                        <span key={s} className="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-sm text-white font-bold transition-all hover:border-electric-400 hover:bg-electric-400/10 hover:text-electric-400 shadow-glass">
-                                                            {s}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            </section>
+          {/* Key Featured Projects */}
+          <section className="space-y-4">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-amber-400 print:text-amber-800 font-bold">
+              // Featured Software Projects
+            </h2>
 
-                            {/* Achievements Sidebar */}
-                            <section>
-                                <motion.div variants={itemVariants} className="space-y-8">
-                                    <div className="flex items-center gap-4">
-                                        <h2 className="text-sm font-mono font-black text-electric-400 tracking-[0.3em] uppercase whitespace-nowrap">Milestones</h2>
-                                        <div className="h-px flex-1 bg-gradient-to-l from-electric-400/50 via-electric-400/10 to-transparent" />
-                                    </div>
-                                    <div className="space-y-4">
-                                        {[
-                                            { icon: Target, text: "Systems Architect" },
-                                            { icon: Zap, text: "Full-Stack Expert" },
-                                            { icon: Crown, text: "Innovation Lead" },
-                                            { icon: Star, text: "UI/UX Specialist" }
-                                        ].map((m, i) => (
-                                            <motion.div
-                                                key={i}
-                                                variants={itemVariants}
-                                                className="flex items-center gap-5 p-5 rounded-[1.5rem] bg-white/[0.03] border border-white/10 group hover:border-electric-400/40 hover:bg-white/[0.06] transition-all duration-500 shadow-xl"
-                                            >
-                                                <div className="p-3 rounded-xl bg-electric-400/10 text-electric-400 group-hover:scale-110 group-hover:bg-electric-400 group-hover:text-black transition-all">
-                                                    <m.icon className="w-5 h-5" />
-                                                </div>
-                                                <span className="text-sm font-black text-white group-hover:text-electric-400 transition-colors uppercase tracking-tighter">{m.text}</span>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            </section>
+            <div className="space-y-3">
+              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50 space-y-1">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-foreground print:text-black">Agri Value Connect (MAZAOLOOP)</span>
+                  <span className="text-zinc-400 print:text-zinc-600">Next.js · Supabase · M-Pesa Daraja · Groq LLM</span>
+                </div>
+                <p className="text-xs text-zinc-300 print:text-zinc-700">
+                  Agricultural marketplace connecting Kenyan farmers to commercial buyers and crop-waste processors with automated M-Pesa STK Push settlements. Built for KCIC Cleantech Innovation Competition.
+                </p>
+              </div>
 
-                            {/* Quick Stats */}
-                            <section>
-                                <motion.div variants={itemVariants} className="glass rounded-[2rem] p-8 bg-gradient-to-br from-electric-400/20 to-neon-400/10 border border-white/10 text-center">
-                                    <p className="text-[10px] font-mono font-black text-white/40 uppercase tracking-[0.5em] mb-4">Availability</p>
-                                    <p className="text-xl font-black text-white mb-2">OPEN FOR HIRE</p>
-                                    <p className="text-xs text-electric-400 font-bold uppercase tracking-widest leading-relaxed">Nairobi 🇰🇪 // Remote 🌍</p>
-                                </motion.div>
-                            </section>
-                        </div>
-                    </div>
+              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50 space-y-1">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-foreground print:text-black">AURA Intelligence</span>
+                  <span className="text-zinc-400 print:text-zinc-600">Next.js · Claude 3.5 Sonnet API · LangChain</span>
+                </div>
+                <p className="text-xs text-zinc-300 print:text-zinc-700">
+                  Adaptive User Reasoning Architecture — neuro-symbolic hybrid reasoning platform pairing deterministic logic gates with multi-turn LLM reasoning chains.
+                </p>
+              </div>
 
-                    {/* Footer Footnote */}
-                    <motion.div variants={itemVariants} className="mt-40 pt-16 border-t border-white/10 text-center">
-                        <p className="text-xs font-mono font-black text-white/20 uppercase tracking-[1.5em] animate-pulse">
-                            System Finalized // Built by MIKESTH3TIC.DEV
-                        </p>
-                    </motion.div>
-                </motion.div>
-            </main>
+              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50 space-y-1">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-foreground print:text-black">StrideOS</span>
+                  <span className="text-zinc-400 print:text-zinc-600">Kotlin · Jetpack Compose · OpenStreetMap</span>
+                </div>
+                <p className="text-xs text-zinc-300 print:text-zinc-700">
+                  Native Android GPS telemetry engine with offline vector route rendering, background tracking service, and local Room DB persistence.
+                </p>
+              </div>
 
-            {/* Print Styles */}
-            <style jsx global>{`
-                @media print {
-                    .relative { position: static !important; }
-                    .min-h-screen { height: auto !important; }
-                    .pt-32 { padding-top: 2rem !important; }
-                    .container-custom { max-width: 100% !important; }
-                    .glass { background: white !important; color: black !important; border: 1px solid #eee !important; box-shadow: none !important; backdrop-filter: none !important; }
-                    .text-white, .text-gradient, .text-electric-400 { color: black !important; background: none !important; -webkit-text-fill-color: initial !important; }
-                    .bg-background, .bg-white\\/[0.03], .bg-white\\/5 { background: white !important; }
-                    .border-white\\/10 { border-color: #eee !important; }
-                    .hidden-print { display: none !important; }
-                    nav, button, .pointer-events-none { display: none !important; }
-                    .shadow-glass, .shadow-2xl, .shadow-[0_0_50px_rgba(0,0,0,0.5)] { box-shadow: none !important; }
-                    body { background: white !important; color: black !important; }
-                    h1, h2, h3, p, span { color: black !important; }
-                }
-            `}</style>
-        </div>
-    );
+              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50 space-y-1">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-foreground print:text-black">ORACLE: NSE Market Intelligence</span>
+                  <span className="text-zinc-400 print:text-zinc-600">Next.js · Python · Claude API · PostgreSQL</span>
+                </div>
+                <p className="text-xs text-zinc-300 print:text-zinc-700">
+                  Automated financial statement ratio extraction and market sentiment intelligence platform for equities listed on the Nairobi Securities Exchange.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Education */}
+          <section className="space-y-2">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-amber-400 print:text-amber-800 font-bold">
+              // Education
+            </h2>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono">
+              <div>
+                <p className="text-sm font-bold text-foreground print:text-black">
+                  Bachelor of Science in Information Technology (Candidate)
+                </p>
+                <p className="text-xs text-zinc-400 print:text-zinc-600">Kabarak University · Nakuru / Nairobi, Kenya</p>
+              </div>
+              <span className="text-amber-400 print:text-zinc-600 mt-1 sm:mt-0">Graduation: December 2026</span>
+            </div>
+          </section>
+
+          {/* Technical Skills Matrix */}
+          <section className="space-y-3 border-t border-white/[0.08] print:border-zinc-300 pt-6">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-amber-400 print:text-amber-800 font-bold">
+              // Technical Skills
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50">
+                <span className="font-mono text-amber-400 print:text-zinc-800 font-bold block mb-1">
+                  Languages & Frameworks:
+                </span>
+                <span className="text-zinc-300 print:text-zinc-700">
+                  Next.js (App Router), React, TypeScript, JavaScript, Python, Kotlin (Android), Node.js, Tailwind CSS, HTML5/CSS3.
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50">
+                <span className="font-mono text-amber-400 print:text-zinc-800 font-bold block mb-1">
+                  Databases & Cloud:
+                </span>
+                <span className="text-zinc-300 print:text-zinc-700">
+                  PostgreSQL, Supabase, Firebase Firestore, SQLite, Room DB, Vercel, REST APIs, Webhooks.
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50">
+                <span className="font-mono text-amber-400 print:text-zinc-800 font-bold block mb-1">
+                  AI & Intelligent Systems:
+                </span>
+                <span className="text-zinc-300 print:text-zinc-700">
+                  Claude 3.5 Sonnet API, LangChain, Groq AI, Prompt Engineering, Structured Zod Schemas, Sheng/Swahili NLP Dataset.
+                </span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] print:border-zinc-200 print:bg-zinc-50">
+                <span className="font-mono text-amber-400 print:text-zinc-800 font-bold block mb-1">
+                  Payments & Infrastructure:
+                </span>
+                <span className="text-zinc-300 print:text-zinc-700">
+                  Safaricom M-Pesa Daraja API (STK Push/C2B), Structured Cabling, VoIP Telephony, Server Room Deployment.
+                </span>
+              </div>
+            </div>
+          </section>
+        </motion.div>
+      </div>
+    </div>
+  );
 }

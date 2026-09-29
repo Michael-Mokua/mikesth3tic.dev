@@ -5,24 +5,10 @@ import { useEffect, useState } from "react";
 import { Terminal, Shield, Cpu, Wifi } from "lucide-react";
 
 export function SystemStatus() {
-    const [status, setStatus] = useState({
-        node: "PRIMARY_OS_V1",
-        latency: 12,
-        security: "ENCRYPTED_AES_256",
-        uptime: "99.98%"
-    });
-
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-        const interval = setInterval(() => {
-            setStatus(prev => ({
-                ...prev,
-                latency: Math.floor(Math.random() * 5) + 8
-            }));
-        }, 3000);
-        return () => clearInterval(interval);
     }, []);
 
     if (!mounted) return null;
@@ -36,23 +22,11 @@ export function SystemStatus() {
                 </div>
                 <div className="flex items-center gap-1.5">
                     <Terminal className="w-3 h-3 text-electric-400" />
-                    <span className="text-[9px] font-mono text-muted-foreground/60 tracking-wider">Node: {status.node}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                    <Wifi className="w-3 h-3 text-electric-400" />
-                    <span className="text-[9px] font-mono text-muted-foreground/60 tracking-wider">Latency: {status.latency}ms</span>
+                    <span className="text-[9px] font-mono text-muted-foreground/60 tracking-wider">Studio: Nairobi</span>
                 </div>
             </div>
 
             <div className="flex items-center gap-6">
-                <div className="flex items-center gap-1.5">
-                    <Cpu className="w-3 h-3 text-electric-400" />
-                    <span className="text-[9px] font-mono text-muted-foreground/60 tracking-wider">Uptime: {status.uptime}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                    <Shield className="w-3 h-3 text-electric-400" />
-                    <span className="text-[9px] font-mono text-muted-foreground/60 tracking-wider">SECURITY: {status.security}</span>
-                </div>
                 <div className="flex items-center gap-1.5">
                     <span className="text-[9px] font-mono text-electric-400/40 uppercase tracking-[0.2em]">© 2026 MIKESTH3TIC.DEV</span>
                 </div>
